@@ -5,11 +5,6 @@ class Sphere {
         this.theta = theta
         this.color = color
     }
-    *getCoordinates() {
-        yield this.pos.x;
-        yield this.pos.y;
-        yield this.pos.z;
-      }
 
     show() {
         fill(this.color)

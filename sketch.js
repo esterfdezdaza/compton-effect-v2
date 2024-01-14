@@ -1,18 +1,16 @@
-
-let photon1
-let photon2
-let electron1
-let electron2
-
 let eEnergy, incidentLambda, scatteredLambda, photonAngle, electronAngle, incidentLambdaInput, scatteredLambdaInput
 
 let h, me, c
 let mul, ilambda, slambda
 
+let comptonEffect
+
 function setup() {
   createCanvas(400, 400, WEBGL);
   createEasyCam()
   
+  comptonEffect = new ComptonEffect()
+
   // Compton Effect formula variables 
   h = 6.626 * pow(10, -34)
   me = 9.11 * pow(10, -31)
@@ -36,75 +34,21 @@ function setup() {
   
   
   // Spheres positions
-
-  photon1 = new Sphere(-50, 0, 0, 0, [255, 255, 0])
-  photon2 = new Sphere(25, 0, 0, 0, [255, 255, 0])
-  electron1 = new Sphere(0, 0, 0, 0, [0, 0, 255])
-  electron2 = new Sphere(25, 25, 0, 0, [0, 0, 255])
 }
 
 function draw() {
   background(0);
   lights()
-  
-  /* Compton Effect calculations 
-  theta = ((lambda' - lambda) * (me*c)/h ) - 1 
-  */
 
-  scatteredLambda = parseFloat(scatteredLambdaInput.value())
-  incidentLambda =  parseFloat(incidentLambdaInput.value())
-  
-  let leftEquation = ((scatteredLambda - incidentLambda) * mul)
-  leftEquation.toPrecision(5)
+  comptonEffect.scatteredLambda = parseFloat(scatteredLambdaInput.value())
+  comptonEffect.incidentLambda =  parseFloat(incidentLambdaInput.value())
 
-  let theta = acos(leftEquation - 1)
-  theta.toPrecision(5)
+  comptonEffect.calculate()
 
-  electronAngle.value()
-  photonAngle.value(theta)
-  photon2.theta = radianToDegree(- theta)
-
-  /*
-  // Get coordinates of the particles
-  let particles = [photon1, electron1, electron2]
-  for (const coordinate of particles){
-    console.log([...coordinate.getCoordinates()]);
-  }
-  */
-
-  // Connecting 
-  //draw3DTriangle();
-
-  // Showing elements in the screen
-  photon1.show()
-  photon2.show()
-  electron1.show()
-  electron2.show()
+  photonAngle.value(comptonEffect.theta)
+  comptonEffect.draw()
 }
 
 function radianToDegree(rad) {
   return rad * 180 / PI
 }
-
-function draw3DTriangle() {
-  // Set stroke color for edges
-  stroke(0);
-
-  // Set no fill for the shape
-  noFill();
-
-  // Begin the shape
-  beginShape();
-
-  // Define vertices of the triangle
-  let particles = [photon1, electron1, electron2]
-  for (const coordinate of particles){
-    console.log([...coordinate.getCoordinates()]);
-    vertex([...coordinate.getCoordinates()])
-  }
-
-
-  // End the shape
-  endShape(CLOSE);
-}
-
