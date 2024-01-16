@@ -4,10 +4,10 @@ class ComptonEffect {
     c = 3 * pow(10, 8)
 
     constructor() {
-        this.photon1 = new Sphere(-50, 0, 0, 0, [255, 255, 0])
-        this.photon2 = new Sphere(50, 50, 25, 0, [255, 255, 0])
-        this.electron1 = new Sphere(0, 0, 0, 0, [0, 0, 255])
-        this.electron2 = new Sphere(50, 50, 25, 0, [0, 0, 255])
+        this.photon1 = new Sphere(-50, 0, 0, 0, [255, 255, 0], 5)
+        this.photon2 = new Sphere(50, 50, 25, 0, [255, 255, 0], 5)
+        this.electron1 = new Sphere(0, 0, 0, 0, [0, 0, 255], 10)
+        this.electron2 = new Sphere(50, 50, 25, 0, [0, 0, 255], 10)
 
         this.scatteredLambda = 2 * pow(10, -12)
         this.incidentLambda = 1.441 * pow(10, -12)
