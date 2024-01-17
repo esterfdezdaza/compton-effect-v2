@@ -1,24 +1,22 @@
 let incidentLambdaInput, scatteredLambdaInput,photonAngle, electronAngle
 
 let comptonEffect
+let compass
 
 
 function setup() {
   createCanvas(400, 400, WEBGL);
-  createEasyCam()
+  createEasyCam();
   
-  comptonEffect = new ComptonEffect()
-
+  comptonEffect = new ComptonEffect();
+  compass = new Compass();
 
   // Input boxes
-  
-  // Here change powers have changed in case wanna get read of it later
   incidentLambdaInput = createInput(changePowers(comptonEffect.incidentLambda), 'string');
-  incidentLambdaInput = powerReverse(incidentLambdaInput)
   incidentLambdaInput.position(0, 0);
   incidentLambdaInput.size(100, 15);
 
-  scatteredLambdaInput = createInput(comptonEffect.scatteredLambda, 'number');
+  scatteredLambdaInput = createInput(changePowers(comptonEffect.scatteredLambda), 'string');
   scatteredLambdaInput.position(0, 20);
   scatteredLambdaInput.size(100, 15);
 
@@ -31,7 +29,7 @@ function setup() {
   electronAngle.size(100, 15);
 
 
-  // Units
+  // Units for the boxes
   let b1 = createP('m');
   b1.position(110, -15);
   let b2 = createP('m');
@@ -47,14 +45,10 @@ function draw() {
   lights();
 
    // Set up the compass in the right bottom of the screen
-   let compassSize = 20;
-   let compassPosition = createVector(width / 4 - compassSize, height / 4 - compassSize, 0);
-   // Set up the fixed point as the new origin
-   drawCompass(compassPosition, compassSize);
+  compass.drawCompass();
   
-
-  comptonEffect.scatteredLambda = parseFloat(scatteredLambdaInput.value());
-  comptonEffect.incidentLambda =  parseFloat(incidentLambdaInput.value());
+  comptonEffect.scatteredLambda = parseFloat(powerReverse(scatteredLambdaInput.value()));
+  comptonEffect.incidentLambda =  parseFloat(powerReverse(incidentLambdaInput.value()));
 
   comptonEffect.calculate();
 
@@ -63,68 +57,22 @@ function draw() {
 }
 
 function radianToDegree(rad) {
-  return rad * 180 / PI
+  return rad * (180 / Math.PI)
 }
 
-function drawCompass(position, size) {
-  push();
-
-  // Set up the fixed point as the new origin
-  translate(position.x, position.y, position.z);
-
-  // X-axis (red)
-  stroke(255, 0, 0);
-  line(0, 0, 0, size, 0, 0);
-  
-
-  // Y-axis (green)
-  stroke(0, 255, 0);
-  line(0, 0, 0, 0, size, 0);
-
-  // Z-axis (blue)
-  stroke(0, 0, 255);
-  line(0, 0, 0, 0, 0, size);
-
-  // Draw arrows at the ends of the axes
-  //drawArrow(createVector(size, 0, 0), createVector(10, 0, 0));
-  //drawArrow(createVector(0, size, 0), createVector(0, 10, 0));
-  //drawArrow(createVector(0, 0, size), createVector(0, 0, 10));
-
-  pop();
-}
-
-
-function drawArrow(base, vec) {
-  push();
-  translate(base.x, base.y, base.z);
-  line(0, 0, 0, vec.x, vec.y, vec.z);
-  rotateArrow(vec);
-  line(0, 0, 0, -8, -8, 0);
-  line(0, 0, 0, -8, 8, 0);
-  pop();
-}
-
-function rotateArrow(vec) {
-  let sigma = atan2(vec.y, vec.x);
-  let phi = atan2(sqrt(vec.x * vec.x + vec.y * vec.y), vec.z);
-  rotate(sigma, 0, phi);
-}
-
+// To show powers 
 function changePowers(number){
   let exponent = Math.floor(Math.log10(Math.abs(number)));
   let mantissa = number / Math.pow(10, exponent);
-  let expressionString = `${mantissa}*10^${exponent}`
+  let expressionString = `${mantissa} * 10^ ${exponent}`
   return expressionString
 };
 
-// Here problem is that I'm changing from string to number again fro calculations
-// buuuut the string 'string' is an object type and I have to change it to string
-
 function powerReverse(string){
-  console.log(typeof(string))
-  let parts = str.split(str, '*');
+  console.log(string)
+  let parts = string.split('*', 2);
   let mantissa = parseFloat(parts[0]);
-  let exponent = parseFloat(parts[1].replace('10^', ''));
+  let exponent = parseFloat(parts[1].replace('10^',''));
   let result = mantissa * Math.pow(10, exponent);
-  console.log(result);
+  return result;
 }

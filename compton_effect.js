@@ -9,12 +9,12 @@ class ComptonEffect {
         this.electron1 = new Sphere(0, 0, 0, 0, [0, 0, 255], 10)
         this.electron2 = new Sphere(50, 50, 25, 0, [0, 0, 255], 10)
 
-        this.scatteredLambda = 2 * pow(10, -12)
-        this.incidentLambda = 1.441 * pow(10, -12)
-        this.theta = PI / 3
-        this.h = 6.626 * pow(10, -34)
-        this.me = 9.11 * pow(10, -31)
-        this.c = 3 * pow(10, 8)
+        this.scatteredLambda = 2 * Math.pow(10, -12)
+        this.incidentLambda = 1.441 * Math.pow(10, -12)
+        this.theta = Math.PI / 3
+        this.h = 6.626 * Math.pow(10, -34)
+        this.me = 9.11 * Math.pow(10, -31)
+        this.c = 3 * Math.pow(10, 8)
         this.static_variables = (this.me*this.c)/this.h
     }
 
@@ -26,7 +26,7 @@ class ComptonEffect {
         let leftEquation = ((this.scatteredLambda - this.incidentLambda) * this.static_variables)
         leftEquation.toPrecision(5)
 
-        let theta = acos(leftEquation - 1)
+        let theta = Math.acos(leftEquation - 1)
         this.theta = theta.toPrecision(5)
         this.photon2.theta = radianToDegree(- theta)
         console.log(radianToDegree(- theta))
