@@ -48,6 +48,6 @@ class ComptonEffect {
         line(this.photon2.pos.x, this.photon2.pos.y, this.photon2.pos.z, this.electron1.pos.x, this.electron1.pos.y, this.electron1.pos.z)
         rotateZ(radianToDegree( this.theta))
         line(this.electron1.pos.x, this.electron1.pos.y, this.electron1.pos.z, this.electron2.pos.x, this.electron2.pos.y, this.electron2.pos.z)
-
+        
     }
 }

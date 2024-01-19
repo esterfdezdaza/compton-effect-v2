@@ -1,7 +1,7 @@
 class Compass{
     constructor() {
         this.size = 20;
-        this.position = createVector(width / 4 - this.size, height / 4 - this.size, 0);
+        this.position = createVector(windowWidth / 4 - this.size, windowHeight / 4 - this.size, 0);
     }
 
     drawCompass() {
@@ -22,10 +22,11 @@ class Compass{
         // Z-axis (blue)
         stroke(0, 0, 255);
         line(0, 0, 0, 0, 0, this.size);
+        
         pop();
     }
       
-    drawArrow(base, vec) {
+    /* drawArrow(base, vec) {
         push();
         translate(base.x, base.y, base.z);
         line(0, 0, 0, vec.x, vec.y, vec.z);
@@ -39,5 +40,5 @@ class Compass{
         let sigma = atan2(vec.y, vec.x);
         let phi = atan2(sqrt(vec.x * vec.x + vec.y * vec.y), vec.z);
         rotate(sigma, 0, phi);
-    }
+    }*/
 }

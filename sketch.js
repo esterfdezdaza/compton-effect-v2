@@ -5,7 +5,7 @@ let compass
 
 
 function setup() {
-  createCanvas(400, 400, WEBGL);
+  createCanvas(windowWidth, windowHeight, WEBGL);
   createEasyCam();
   
   comptonEffect = new ComptonEffect();
@@ -13,43 +13,65 @@ function setup() {
 
   // Input boxes
   incidentLambdaInput = createInput(changePowers(comptonEffect.incidentLambda), 'string');
-  incidentLambdaInput.position(0, 0);
+  incidentLambdaInput.position(windowWidth / 3,  windowHeight - 540);
   incidentLambdaInput.size(100, 15);
+  let title1 = createP("Incident Photon's Wavelength");
+  title1.position(windowWidth / 80,  windowHeight - 555);
 
   scatteredLambdaInput = createInput(changePowers(comptonEffect.scatteredLambda), 'string');
-  scatteredLambdaInput.position(0, 20);
+  scatteredLambdaInput.position(windowWidth / 3,  windowHeight - 520);
   scatteredLambdaInput.size(100, 15);
+  let title2 = createP("Scattered Photon's Wavelength");
+  title2.position(windowWidth / 80,  windowHeight - 535);
+
 
   photonAngle = createInput(0, 'number');
-  photonAngle.position(0, 40);
+  photonAngle.position(windowWidth / 13,  windowHeight - 500);
   photonAngle.size(100, 15);
+  let title3 = createP('Theta');
+  title3.position(windowWidth / 80,  windowHeight - 515);
+
 
   electronAngle = createInput(0, 'number');
-  electronAngle.position(0, 60);
+  electronAngle.position(windowWidth / 15,  windowHeight - 480);
   electronAngle.size(100, 15);
+  let title4 = createP('Phi');
+  title4.position(windowWidth / 80,  windowHeight - 495);
+
 
 
   // Units for the boxes
   let b1 = createP('m');
-  b1.position(110, -15);
+  b1.position(windowWidth / 1.95,  windowHeight - 555);
   let b2 = createP('m');
-  b2.position(110, 5);
+  b2.position(windowWidth / 1.95, windowHeight - 535);
   let b3 = createP('Rad');
-  b3.position(110, 25);
+  b3.position(windowWidth / 4, windowHeight - 515);
   let b4 = createP('Rad');
-  b4.position(110, 45);
+  b4.position(windowWidth / 4.2, windowHeight - 495);
+
+  // Reference Box
+
+  let photonParticle = createP('Photon');
+  photonParticle.position(windowWidth / 60, windowHeight - 110);
+
+  let electronParticle = createP('Electron');
+  electronParticle.position(windowWidth / 60, windowHeight - 90);
+
+ 
+
 }
 
 function draw() {
   background(255);
   lights();
-
+  
    // Set up the compass in the right bottom of the screen
   compass.drawCompass();
   
   comptonEffect.scatteredLambda = parseFloat(powerReverse(scatteredLambdaInput.value()));
   comptonEffect.incidentLambda =  parseFloat(powerReverse(incidentLambdaInput.value()));
-
+  
   comptonEffect.calculate();
 
   photonAngle.value(comptonEffect.theta);
