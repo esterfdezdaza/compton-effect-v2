@@ -34,6 +34,7 @@ class ComptonEffect {
     }
 
     draw() {
+        
         // Showing elements in the screen
         this.photon1.show()
         this.photon2.show()
@@ -41,12 +42,13 @@ class ComptonEffect {
         this.electron2.show()
 
         // lines between particles
+
         stroke(100);
         strokeWeight(4);
         line(this.photon1.pos.x, this.photon1.pos.y, this.photon1.pos.z, this.electron1.pos.x, this.electron1.pos.y, this.electron1.pos.z)
         rotateZ(radianToDegree(- this.theta))
         line(this.photon2.pos.x, this.photon2.pos.y, this.photon2.pos.z, this.electron1.pos.x, this.electron1.pos.y, this.electron1.pos.z)
-        rotateZ(radianToDegree( this.theta))
+        rotateZ(radianToDegree(this.theta))
         line(this.electron1.pos.x, this.electron1.pos.y, this.electron1.pos.z, this.electron2.pos.x, this.electron2.pos.y, this.electron2.pos.z)
         
     }
