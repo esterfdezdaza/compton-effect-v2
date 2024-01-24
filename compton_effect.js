@@ -1,7 +1,7 @@
 class ComptonEffect {
-    h = 6.626 * pow(10, -34)
-    me = 9.11 * pow(10, -31)
-    c = 3 * pow(10, 8)
+    h = 6.626 * Math.pow(10, -34)
+    me = 9.11 * Math.pow(10, -31)
+    c = 3 * Math.pow(10, 8)
 
     constructor() {
         this.photon1 = new Sphere(-50, 0, 0, 0, [255, 255, 0], 5)
@@ -28,8 +28,7 @@ class ComptonEffect {
 
         let theta = Math.acos(leftEquation - 1)
         this.theta = theta.toPrecision(5)
-        this.photon2.theta = radianToDegree(- theta)
-        console.log(radianToDegree(- theta))
+        this.photon2.theta = - theta * (180 / Math.PI)
 
     }
 
@@ -43,13 +42,17 @@ class ComptonEffect {
 
         // lines between particles
 
-        stroke(100);
-        strokeWeight(4);
-        line(this.photon1.pos.x, this.photon1.pos.y, this.photon1.pos.z, this.electron1.pos.x, this.electron1.pos.y, this.electron1.pos.z)
-        rotateZ(radianToDegree(- this.theta))
-        line(this.photon2.pos.x, this.photon2.pos.y, this.photon2.pos.z, this.electron1.pos.x, this.electron1.pos.y, this.electron1.pos.z)
-        rotateZ(radianToDegree(this.theta))
-        line(this.electron1.pos.x, this.electron1.pos.y, this.electron1.pos.z, this.electron2.pos.x, this.electron2.pos.y, this.electron2.pos.z)
+        p.stroke(100); // Use p.stroke instead of just stroke
+        p.strokeWeight(4);
+        p.line(this.photon1.pos.x, this.photon1.pos.y, this.photon1.pos.z, this.electron1.pos.x, this.electron1.pos.y, this.electron1.pos.z);
         
-    }
+        p.push();
+        p.rotateZ(-this.theta * (180 / Math.PI));
+        p.line(this.photon2.pos.x, this.photon2.pos.y, this.photon2.pos.z, this.electron1.pos.x, this.electron1.pos.y, this.electron1.pos.z);
+        p.pop();
+        
+        p.rotateZ(this.theta * (180 / Math.PI));
+        p.line(this.electron1.pos.x, this.electron1.pos.y, this.electron1.pos.z, this.electron2.pos.x, this.electron2.pos.y, this.electron2.pos.z);
+      }
+    
 }
