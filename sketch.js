@@ -1,7 +1,67 @@
+let myP5 = function(p) {
+  p.setup = function() {
+    let canvas1 = p.createCanvas(200, 200, p.WEBGL);
+    canvas1.position(0,350)
+    p.createEasyCam();
+  }
+  p.draw = function() {
+    
+    p.fill([255, 255, 0])
+    p.lights();
+    p.stroke(0)
+    p.strokeWeight(0)
+    p.translate(-10, -2, 0)
+    p.sphere(5)
+    
+    p.fill([0, 0, 255])
+    p.lights();
+    p.stroke(0)
+    p.strokeWeight(0)
+    p.translate(5, 25, 0)
+    p.sphere(10)
+  }
+}
+
+let myP51 = function(p) {
+  p.setup = function() {
+  let canvas2 = p.createCanvas(p.windowWidth, p.windowHeight, p.WEBGL);
+  canvas2.position(p.windowWidth / 2 - 100, p.windowHeight / 2 - 80)
+  p.createEasyCam();
+}
+  p.draw = function() {
+    p.push()
+    // Set up the fixed point as the new origin
+    //p.translate(this.position.x, this.position.y, this.position.z);
+    //this.position.set(windowWidth / 8 - this.size, windowHeight / 8 - this.size, 0)
+    
+    // X-axis (red)
+    p.stroke(255, 0, 0);
+    p.strokeWeight(4);
+    p.line(0, 0, 0, 30, 0, 0);
+    
+
+    // Y-axis (green)
+    p.stroke(0, 255, 0);
+    p.strokeWeight(4);
+    p.line(0, 0, 0, 0, 30, 0);
+
+    // Z-axis (blue)
+    p.stroke(0, 0, 255);
+    p.strokeWeight(4);
+    p.line(0, 0, 0, 0, 0, 30);
+    p.pop()
+    
+  }
+}
+
 let incidentLambdaInput, scatteredLambdaInput,photonAngle, electronAngle
 
 let comptonEffect
 let compass
+// Create a p5.js instance
+let mySketch = new p5(myP5);
+// Create a p5.js instance
+let mySketch2 = new p5(myP51);
 
 
 function setup() {
@@ -9,25 +69,25 @@ function setup() {
   createEasyCam();
   
   comptonEffect = new ComptonEffect();
-  compass = new Compass();
+  waveParticle = new Waveparticle(-50, 0, 0, 0, 0, 0, 50, 10);
 
   // Input boxes
   let title1 = createP("Incident Photon's Wavelength");
-  title1.position(windowWidth / 80,  windowHeight - 555);
+  title1.position(windowWidth / 160,  windowHeight - 555);
   incidentLambdaInput = createInput(changePowers(comptonEffect.incidentLambda), 'string');
-  incidentLambdaInput.position(windowWidth / 80 + 200,  windowHeight - 540);
+  incidentLambdaInput.position(windowWidth / 160 + 200,  windowHeight - 540);
   incidentLambdaInput.size(100, 15);
   
   let title2 = createP("Scattered Photon's Wavelength");
-  title2.position(windowWidth / 80,  windowHeight - 535);
+  title2.position(windowWidth / 160,  windowHeight - 535);
   scatteredLambdaInput = createInput(changePowers(comptonEffect.scatteredLambda), 'string');
-  scatteredLambdaInput.position(windowWidth / 80 + 205,  windowHeight - 520);
+  scatteredLambdaInput.position(windowWidth / 160 + 205,  windowHeight - 520);
   scatteredLambdaInput.size(100, 15);
   
   let title3 = createP('Theta');
-  title3.position(windowWidth / 80,  windowHeight - 515);
+  title3.position(windowWidth / 160,  windowHeight - 515);
   photonAngle = createInput(0, 'number');
-  photonAngle.position(windowWidth / 80 + 40,  windowHeight - 500);
+  photonAngle.position(windowWidth / 160 + 40,  windowHeight - 500);
   photonAngle.size(100, 15);
 
 
@@ -37,8 +97,6 @@ function setup() {
   electronAngle.position(windowWidth / 80 + 30,  windowHeight - 480);
   electronAngle.size(100, 15);
   
-
-
 
   // Units for the boxes
   let b1 = createP('m');
@@ -53,12 +111,10 @@ function setup() {
   // Reference Box
 
   let photonParticle = createP('Photon');
-  photonParticle.position(windowWidth / 60, windowHeight - 110);
+  photonParticle.position(windowWidth / 60, windowHeight - 120);
 
   let electronParticle = createP('Electron');
-  electronParticle.position(windowWidth / 60, windowHeight - 90);
-
-
+  electronParticle.position(windowWidth / 60, windowHeight - 80);
 
 }
 
@@ -68,7 +124,7 @@ function draw() {
   
    // Set up the compass in the right bottom of the screen
   
-  compass.draw();
+  // compass.draw();
   
   comptonEffect.scatteredLambda = parseFloat(powerReverse(scatteredLambdaInput.value()));
   comptonEffect.incidentLambda =  parseFloat(powerReverse(incidentLambdaInput.value()));
@@ -78,6 +134,7 @@ function draw() {
   photonAngle.value(comptonEffect.theta);
   
   comptonEffect.draw();
+  waveParticle.show();
 
   
 }

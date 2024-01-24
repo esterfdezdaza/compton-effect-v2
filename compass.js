@@ -1,14 +1,14 @@
 class Compass{
     constructor() {
         this.size = 20;
-        this.position = createVector(windowWidth / 4 - this.size, windowHeight / 4 - this.size, 0);
+        this.position = createVector(windowWidth / 8 - this.size, windowHeight / 8 - this.size, 0);
     }
 
     draw() {
         push()
         // Set up the fixed point as the new origin
         translate(this.position.x, this.position.y, this.position.z);
-        this.position.set(windowWidth / 4 - this.size, windowHeight / 4 - this.size, 0)
+        this.position.set(windowWidth / 8 - this.size, windowHeight / 8 - this.size, 0)
         
         // X-axis (red)
         stroke(255, 0, 0);
