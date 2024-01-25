@@ -58,6 +58,7 @@ let incidentLambdaInput, scatteredLambdaInput,photonAngle, electronAngle
 
 let comptonEffect
 let compass
+let waveParticle1, waveParticle2
 // Create a p5.js instance
 let mySketch = new p5(myP5);
 // Create a p5.js instance
@@ -69,7 +70,8 @@ function setup() {
   createEasyCam();
   
   comptonEffect = new ComptonEffect();
-  waveParticle = new Waveparticle(-50, 0, 0, 0, 0, 0, 50, 10);
+  waveParticle1 = new Waveparticle(-100, 0, 0, 0, 0, 0, 10, 30);
+  waveParticle2 = new Waveparticle(0, 0, 0, 50, -100, 0, 10, 30);
 
   // Input boxes
   let title1 = createP("Incident Photon's Wavelength");
@@ -134,8 +136,23 @@ function draw() {
   photonAngle.value(comptonEffect.theta);
   
   comptonEffect.draw();
-  waveParticle.show();
+  
 
+  if(waveParticle1.progress < 1) {
+    waveParticle1.progress += 0.01
+  }else{
+    waveParticle1.progress = 0
+  }
+  waveParticle1.setProgress();
+  waveParticle1.show();
+
+  if(waveParticle2.progress < 1) {
+    waveParticle2.progress += 0.01
+  }else{
+    waveParticle2.progress = 0
+  }
+  waveParticle2.setProgress();
+  waveParticle2.show();
   
 }
 

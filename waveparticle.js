@@ -7,7 +7,7 @@ class Waveparticle {
     this.a = a;
     this.width = width; // "height" of the wave
     this.progress = 0;
-    this.particle = new Sphere(0, 0, 0, 0, this.color, 3);
+    this.particle = new Sphere(0, 0, 0, 0, this.color, 5);
     this.trail = [];
     
     this.setProgress();
@@ -79,16 +79,9 @@ class Waveparticle {
         pop();
         
         fill(0);
-        push();
-        translate(this.start.x, this.start.y, this.start.z);
-        // sphere(10);
-        pop();
-        push();
-        translate(this.end.x, this.end.y, this.end.z);
-        // sphere(10);
-        pop();
-        
+               
         stroke(0);
+        strokeWeight(2)
         this._line(this.start, this.end);
         
         // this code is to make the arrow point
