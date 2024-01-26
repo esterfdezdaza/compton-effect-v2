@@ -69,8 +69,9 @@ function setup() {
   createEasyCam();
   
   comptonEffect = new ComptonEffect();
-  waveParticle1 = new Waveparticle(-100, 0, 0, 0, 0, 0, 10, 30);
-  waveParticle2 = new Waveparticle(0, 0, 0, 50, -100, 0, 10, 30);
+  waveParticle1 = comptonEffect.photon1
+  waveParticle1.progress = 0.1
+  waveParticle2 = comptonEffect.photon2
 
   // Input boxes
   let title1 = createP("Incident Photon's Wavelength");
@@ -136,23 +137,24 @@ function draw() {
   comptonEffect.draw();
   
   // Movement of the Particle
-
-  if(waveParticle1.progress < 1) {
-    waveParticle1.progress += 0.01
-  }else{
-    waveParticle1.progress = 0
-  }
-  waveParticle1.setProgress();
-  waveParticle1.show();
-
-  if(waveParticle2.progress < 1) {
-    waveParticle2.progress += 0.01
-  }else{
-    waveParticle2.progress = 0
-  }
-  waveParticle2.setProgress();
-  waveParticle2.show();
   
+  if (waveParticle1.progress != 0){
+    if(waveParticle1.progress < 1) {
+      waveParticle1.progress += 0.01
+    }else{
+      waveParticle1.progress = 0
+    }
+    waveParticle1.setProgress();
+  } else if (waveParticle1.progress == 0 ) {
+    if(waveParticle2.progress < 1) {
+      waveParticle2.progress += 0.01
+    }else{
+      waveParticle2.progress = 0
+      waveParticle1.progress = 0.1
+    }
+    waveParticle2.setProgress();
+  }
+
 }
 
 function radianToDegree(rad) {

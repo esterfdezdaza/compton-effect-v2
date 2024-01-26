@@ -1,7 +1,8 @@
 class Waveparticle {
-    constructor(x1, y1, z1, x2, y2, z2, a, width) {
+    constructor(x1, y1, z1, x2, y2, z2, a, width, angle) {
     this.color = color(255, 220, 0);
     
+    this.angle = 0
     this.start = createVector(x1, y1, z1);
     this.end = createVector(x2, y2, z2);
     this.a = a;

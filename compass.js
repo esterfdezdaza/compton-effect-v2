@@ -25,20 +25,4 @@ class Compass{
         pop()
         
     }
-      
-    /* drawArrow(base, vec) {
-        push();
-        translate(base.x, base.y, base.z);
-        line(0, 0, 0, vec.x, vec.y, vec.z);
-        rotateArrow(vec);
-        line(0, 0, 0, -8, -8, 0);
-        line(0, 0, 0, -8, 8, 0);
-        pop();
-    }
-
-    rotateArrow(vec) {
-        let sigma = atan2(vec.y, vec.x);
-        let phi = atan2(sqrt(vec.x * vec.x + vec.y * vec.y), vec.z);
-        rotate(sigma, 0, phi);
-    }*/
 }
