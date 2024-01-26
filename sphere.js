@@ -1,8 +1,8 @@
 class Sphere {
-    constructor(x, y, z, theta, color, radius) {
+    constructor(x, y, z, angle, color, radius) {
         this.pos = createVector(x, y, z)
         this.radius = radius
-        this.theta = theta
+        this.angle = angle
         this.color = color
     }
 
@@ -11,7 +11,7 @@ class Sphere {
         stroke(0)
         strokeWeight(0)
         push()
-        rotateZ(this.theta)
+        rotateZ(this.angle)
         translate(this.pos.x, this.pos.y, this.pos.z)
         sphere(this.radius)
         pop()

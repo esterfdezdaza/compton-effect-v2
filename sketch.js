@@ -55,7 +55,6 @@ let myP51 = function(p) {
 }
 
 let incidentLambdaInput, scatteredLambdaInput,photonAngle, electronAngle
-
 let comptonEffect
 let compass
 let waveParticle1, waveParticle2
@@ -124,19 +123,19 @@ function draw() {
   background(255);
   lights();
   
-   // Set up the compass in the right bottom of the screen
-  
-  // compass.draw();
-  
   comptonEffect.scatteredLambda = parseFloat(powerReverse(scatteredLambdaInput.value()));
   comptonEffect.incidentLambda =  parseFloat(powerReverse(incidentLambdaInput.value()));
   
   comptonEffect.calculate();
   
+  // Updating angles' values
+
   photonAngle.value(comptonEffect.theta);
+  electronAngle.value(comptonEffect.phi)
   
   comptonEffect.draw();
   
+  // Movement of the Particle
 
   if(waveParticle1.progress < 1) {
     waveParticle1.progress += 0.01
