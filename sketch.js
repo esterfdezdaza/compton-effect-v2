@@ -84,14 +84,14 @@ function setup() {
   
   let title3 = createP('Theta');
   title3.position(windowWidth / 160,  windowHeight - 515);
-  photonAngle = createInput(0, 'number');
+  photonAngle = createInput(Math.PI / 3, 'number');
   photonAngle.position(windowWidth / 160 + 40,  windowHeight - 500);
   photonAngle.size(100, 15);
 
 
   let title4 = createP('Phi');
   title4.position(windowWidth / 80,  windowHeight - 495);
-  electronAngle = createInput(0, 'number');
+  electronAngle = createInput(Math.PI / 3, 'number');
   electronAngle.position(windowWidth / 80 + 30,  windowHeight - 480);
   electronAngle.size(100, 15);
   
@@ -122,6 +122,9 @@ function draw() {
   
   comptonEffect.scatteredLambda = parseFloat(powerReverse(scatteredLambdaInput.value()));
   comptonEffect.incidentLambda =  parseFloat(powerReverse(incidentLambdaInput.value()));
+  comptonEffect.theta =  parseFloat(photonAngle.value());
+  comptonEffect.phi =  parseFloat(electronAngle.value());
+
   
   comptonEffect.calculate();
   

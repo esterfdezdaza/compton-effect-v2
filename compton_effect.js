@@ -11,6 +11,7 @@ class ComptonEffect {
         this.scatteredLambda = 2 * Math.pow(10, -12)
         this.incidentLambda = 1.441 * Math.pow(10, -12)
         this.theta = Math.PI / 3
+        //Needs to calculate phi for the given example
         this.phi = Math.PI / 3
         this.h = 6.626 * Math.pow(10, -34)
         this.me = 9.11 * Math.pow(10, -31)
@@ -22,25 +23,37 @@ class ComptonEffect {
     calculate() {
         /* Compton Effect calculations 
         theta = acos( ((lambda' - lambda) * (me*c)/h ) - 1 ) 
-        */
-
-        let leftEquation = ((this.scatteredLambda - this.incidentLambda) * this.static_variables)
-        leftEquation.toPrecision(5)
-
-        let theta = Math.acos(leftEquation - 1)
-        this.theta = theta.toPrecision(5)
         
-        this.photon2.angle = radianToDegree(- theta)
-        console.log(radianToDegree(- theta))
+        phi = arcot( 1 + h/(me*c*lambda) * tan( theta/ 2 ) ) 
+        */
+        if(this.theta != Math.PI / 3){
+            console.log('positive');
 
+        }else if(this.incidentLambda != 1.441 * Math.pow(10, -12) ){
+            console.log('positive');
 
-        /* phi = arcot( 1 + h/(me*c*lambda) * tan( theta/ 2 ) ) */
+        }else if (this.scatteredLambda != 2 * Math.pow(10, -12)){
+            console.log('positive');
+        }else if (this.phi != Math.PI / 3) {
+            console.log('positive');
 
-        let leftEquation2 = Math.atan(1 / (1 + this.static_variables2))
-        leftEquation2.toPrecision(5)
-        let phi = leftEquation2 * Math.tan( this.theta / 2 )
-        this.phi = phi.toPrecision(5)
-        this.electron2.angle = - phi
+        }else{
+            let leftEquation = ((this.scatteredLambda - this.incidentLambda) * this.static_variables)
+            leftEquation.toPrecision(5)
+
+            let theta = Math.acos(leftEquation - 1)
+            this.theta = theta.toPrecision(5)
+            
+            this.photon2.angle = radianToDegree(- theta)
+            console.log(radianToDegree(- theta))
+
+            let leftEquation2 = Math.atan(1 / (1 + this.static_variables2))
+            leftEquation2.toPrecision(5)
+            let phi = leftEquation2 * Math.tan( this.theta / 2 )
+            this.phi = phi.toPrecision(5)
+            this.electron2.angle = - phi
+        }
+    
     }
 
     draw() {

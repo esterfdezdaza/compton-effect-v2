@@ -66,23 +66,20 @@ class Waveparticle {
         let distance = this.start.dist(this.end);
         for (let i = 0; i < this.trail.length - 1; i++) {
             let col = this.color;
-            // col.setAlpha(255 * (i / this.trail.length));
             stroke(col);
             strokeWeight(5 * (i / this.trail.length));
-            // this.trail[i].show();
             if (abs(this.trail[i].pos.x - distance) < 1 && abs(this.trail[i].pos.y) < 1 && abs(this.trail[i + 1].pos.x) < 1 && abs(this.trail[i + 1].pos.y) < 1) {
                 console.log("hello");
                 continue;
             }
-
             this._line(this.trail[i].pos, this.trail[i + 1].pos);
         }
         pop();
         
         fill(0);
-               
         stroke(0);
         strokeWeight(2)
+        rotateZ(- this.angle)
         this._line(this.start, this.end);
         
         // this code is to make the arrow point
