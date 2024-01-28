@@ -1,24 +1,20 @@
 let myP5 = function(p) {
   p.setup = function() {
-    let canvas1 = p.createCanvas(200, 200, p.WEBGL);
+    let canvas1 = p.createCanvas(200, 200);
     canvas1.position(0,350)
-    p.createEasyCam();
   }
   p.draw = function() {
     
     p.fill([255, 255, 0])
-    p.lights();
     p.stroke(0)
     p.strokeWeight(0)
-    p.translate(-10, -2, 0)
-    p.sphere(5)
+    p.circle(100, 105, 5)
     
     p.fill([0, 0, 255])
-    p.lights();
     p.stroke(0)
     p.strokeWeight(0)
-    p.translate(5, 25, 0)
-    p.sphere(10)
+    p.circle(100, 145, 10)
+    
   }
 }
 
