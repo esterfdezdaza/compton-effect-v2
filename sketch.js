@@ -139,6 +139,7 @@ function draw() {
   if (this.prevIncLambda != comptonEffect.incidentLambda) {
     console.log("inc lambda changed")
     // user has changed incident lambda
+    comptonEffect.photon1.a = getFrequency(comptonEffect.incidentLambda)
     comptonEffect.calculate_theta()
     comptonEffect.calculate_phi()
 
@@ -149,6 +150,7 @@ function draw() {
   else if (this.prevScaLambda != comptonEffect.scatteredLambda) {
     console.log("sca lambda changed")
     // user has changed scattered lambda
+    comptonEffect.photon2.a = getFrequency(comptonEffect.scatteredLambda)
     comptonEffect.calculate_theta()
     comptonEffect.calculate_phi()
 

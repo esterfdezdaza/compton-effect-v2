@@ -44,7 +44,7 @@ class ComptonEffect {
         //leftEquation2.toPrecision(5)
 
         let phi = leftEquation2 * Math.tan( this.theta / 2 )
-        //this.phi = phi.toPrecision(5)
+        this.phi = phi.toPrecision(5)
 
         console.log("Calculated phi: " + phi + ", in degrees: " + radianToDegree(phi))
     }
@@ -63,5 +63,12 @@ class ComptonEffect {
 
         let scatteredLambda = ((1/this.static_variables) * rightEquation4) + this.incidentLambda
         this.scatteredLambda = scatteredLambda
+        this.photon2.a = getFrequency(scatteredLambda)
     }
+
+    
+}
+
+function getFrequency(nmValue) {
+    return floor(20 / (nmValue * Math.pow(10, 12)))
 }
