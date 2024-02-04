@@ -3,7 +3,7 @@ class ComptonEffect {
         this.photon1 = new  Waveparticle(-100, 0, 0, 0, 0, 0, 10, 30, 0);
         this.photon2 = new Waveparticle(0, 0, 0, 50, -100, 0, 10, 30, 0);
         this.electron1 = new Sphere(0, 0, 0, 0, [0, 0, 255], 10)
-        this.electron2 = new Sphere(50, 50, 25, 0, [0, 0, 255], 10)
+        this.electronMoving = new LinearMovementParticle(0, 0, 0, 50, 100, 0)
         this.scatteredLambda = 2 * Math.pow(10, -12)
         this.incidentLambda = 1.41 * Math.pow(10, -12)
         this.theta = Math.PI / 3
@@ -21,18 +21,12 @@ class ComptonEffect {
         // Showing elements in the screen
         let arrowLength = 100
         this.photon2.end = createVector(arrowLength * cos(this.theta), arrowLength * -sin(this.theta))
-        this.electron2.pos = createVector(arrowLength * cos(this.phi), arrowLength * sin(this.phi))
+        this.electronMoving.end = createVector(arrowLength * cos(this.phi), arrowLength * sin(this.phi))
 
         this.photon1.show()
         this.photon2.show()
-        this.electron1.show()
-        this.electron2.show()
-
-        // lines between particles
-
-        stroke(100);
-        strokeWeight(4);
-        line(this.electron1.pos.x, this.electron1.pos.y, this.electron1.pos.z, this.electron2.pos.x, this.electron2.pos.y, this.electron2.pos.z)
+        //this.electron1.show()
+        this.electronMoving.show()
     }
 
     calculate_theta() {
@@ -51,8 +45,6 @@ class ComptonEffect {
 
         let phi = leftEquation2 * Math.tan( this.theta / 2 )
         //this.phi = phi.toPrecision(5)
-
-        this.electron2.angle = - phi
 
         console.log("Calculated phi: " + phi + ", in degrees: " + radianToDegree(phi))
     }

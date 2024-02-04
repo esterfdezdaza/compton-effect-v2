@@ -201,12 +201,17 @@ function draw() {
       // progress second photon
       waveParticle2.setHidden(false)
       waveParticle2.progress += 0.01
+
+      // move electron
+      comptonEffect.electronMoving.progress += 0.01
     } else {
       waveParticle1.progress = 0
+      comptonEffect.electronMoving.progress = 0
   }
   }
   waveParticle1.setProgress();
   waveParticle2.setProgress();
+  comptonEffect.electronMoving.setProgress();
 
   // save previous values
   this.prevIncLambda = parseFloat(powerReverse(incidentLambdaInput.value()));

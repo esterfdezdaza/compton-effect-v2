@@ -1,13 +1,11 @@
-class Waveparticle {
-    constructor(x1, y1, z1, x2, y2, z2, a, width) {
-    this.color = color(255, 220, 0);
-    
+class LinearMovementParticle {
+    constructor(x1, y1, z1, x2, y2, z2) {
+    this.color = color(0, 0, 255);
+
     this.start = createVector(x1, y1, z1);
     this.end = createVector(x2, y2, z2);
-    this.a = a;
-    this.width = width; // "height" of the wave
     this.progress = 0;
-    this.particle = new Sphere(0, 0, 0, 0, this.color, 5);
+    this.particle = new Sphere(0, 0, 0, 0, this.color, 10);
     this.trail = [];
     
     this.hidden = false // whether or not to draw the particle
@@ -27,15 +25,11 @@ class Waveparticle {
 
     setProgress() {
         let distance = this.start.dist(this.end);
-        /* Note, "slope" below is a constant for given numbers, so if you are calculating
-        a lot of output values, it makes sense to calculate it once. It also makes
-        understanding the code easier */
-        
+    
         let output = distance * this.progress;
-        let pi_val = ((this.a * PI) / distance) * output;
-        
+
         this.particle.pos.x = output;
-        this.particle.pos.y = sin(pi_val) * (this.width / 2);
+        this.particle.pos.y = 0;
         
         this.trail.push(new Sphere(this.particle.pos.x, this.particle.pos.y, this.particle.pos.z, 0, this.color, 3));
         if (this.trail.length > 15) {
