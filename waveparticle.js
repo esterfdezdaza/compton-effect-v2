@@ -11,9 +11,21 @@ class Waveparticle {
     this.particle = new Sphere(0, 0, 0, 0, this.color, 5);
     this.trail = [];
     
+    this.hidden = false // whether or not to draw the particle
+
     this.setProgress();
     }
     
+    progressTrail() {
+        if (this.trail.length > 0) {
+            this.trail = this.trail.slice(1);
+        }
+    }
+
+    setHidden(hidden) {
+        this.hidden = hidden
+    }
+
     setProgress() {
         let distance = this.start.dist(this.end);
         /* Note, "slope" below is a constant for given numbers, so if you are calculating
@@ -33,12 +45,12 @@ class Waveparticle {
     }
     
     show() {
+        this.drawArrow()
+
         push();
         translate(this.start);
-        let or_rel = p5.Vector.add(this.end, p5.Vector.mult(this.start, -1));
-        let diff = 0;
-        //console.log(or_rel);
-        
+        let or_rel = p5.Vector.add(this.end, p5.Vector.mult(this.start, -1)); // relative origin
+        let diff = 0;    
         // Cartesian Quadrants
         // 2 | 1
         // - o -
@@ -56,9 +68,12 @@ class Waveparticle {
             // 1
             diff = 0;
         }
-        
         rotateZ(diff + atan((this.end.y - this.start.y) / (this.end.x - this.start.x)));
-        this.particle.show();
+
+        if (!this.hidden) {
+            this.particle.show();
+        }
+
         stroke([255, 255, 0]);
         strokeWeight(1);
         
@@ -69,17 +84,23 @@ class Waveparticle {
             stroke(col);
             strokeWeight(5 * (i / this.trail.length));
             if (abs(this.trail[i].pos.x - distance) < 1 && abs(this.trail[i].pos.y) < 1 && abs(this.trail[i + 1].pos.x) < 1 && abs(this.trail[i + 1].pos.y) < 1) {
-                console.log("hello");
                 continue;
             }
             this._line(this.trail[i].pos, this.trail[i + 1].pos);
         }
         pop();
-        
+    }
+    
+    _line(v1, v2) {
+        line(v1.x, v1.y, v1.z, v2.x, v2.y, v2.z);
+    }
+
+    drawArrow() {
         fill(0);
+
         stroke(0);
         strokeWeight(2)
-        rotateZ(- this.angle)
+        //rotateZ(- this.angle)
         this._line(this.start, this.end);
         
         // this code is to make the arrow point
@@ -90,10 +111,5 @@ class Waveparticle {
         rotate(angle - HALF_PI); //rotates the arrow point
         triangle(-offset * 0.5, offset, offset * 0.5, offset, 0, -offset / 2); //draws the arrow point as a triangle
         pop();
-        }
-        
-        _line(v1, v2) {
-            line(v1.x, v1.y, v1.z, v2.x, v2.y, v2.z);
-        }
     }
-    
+}

@@ -50,7 +50,7 @@ let myP51 = function(p) {
   }
 }
 
-let incidentLambdaInput, scatteredLambdaInput,photonAngle, electronAngle
+let incidentLambdaInput, scatteredLambdaInput, photonAngle, electronAngle
 let comptonEffect
 let compass
 let waveParticle1, waveParticle2
@@ -59,6 +59,9 @@ let mySketch = new p5(myP5);
 // Create a p5.js instance
 let mySketch2 = new p5(myP51);
 
+// use previous values to observe which input value changed most recenlty
+var prevIncLambda, prevScaLambda, prevTheta, prevPhi
+
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
@@ -66,7 +69,6 @@ function setup() {
   
   comptonEffect = new ComptonEffect();
   waveParticle1 = comptonEffect.photon1
-  waveParticle1.progress = 0.1
   waveParticle2 = comptonEffect.photon2
 
   // Input boxes
@@ -84,14 +86,14 @@ function setup() {
   
   let title3 = createP('Theta');
   title3.position(windowWidth / 160,  windowHeight - 515);
-  photonAngle = createInput(Math.PI / 3, 'number');
+  photonAngle = createInput(Math.PI / 3, 'string');
   photonAngle.position(windowWidth / 160 + 40,  windowHeight - 500);
   photonAngle.size(100, 15);
 
 
   let title4 = createP('Phi');
   title4.position(windowWidth / 80,  windowHeight - 495);
-  electronAngle = createInput(Math.PI / 3, 'number');
+  electronAngle = createInput(Math.PI / 3, 'string');
   electronAngle.position(windowWidth / 80 + 30,  windowHeight - 480);
   electronAngle.size(100, 15);
   
@@ -114,6 +116,15 @@ function setup() {
   let electronParticle = createP('Electron');
   electronParticle.position(windowWidth / 60, windowHeight - 80);
 
+  // initialise previous values
+  // this.prevIncLambda = comptonEffect.incidentLambda
+  // this.prevScaLambda = comptonEffect.scatteredLambda
+  // this.prevTheta = comptonEffect.theta
+  // this.prevPhi = comptonEffect.phi
+  this.prevIncLambda = parseFloat(powerReverse(incidentLambdaInput.value()));
+  this.prevScaLambda = parseFloat(powerReverse(scatteredLambdaInput.value()));
+  this.prevTheta = parseFloat(photonAngle.value());
+  this.prevPhi = parseFloat(electronAngle.value());
 }
 
 function draw() {
@@ -125,35 +136,83 @@ function draw() {
   comptonEffect.theta =  parseFloat(photonAngle.value());
   comptonEffect.phi =  parseFloat(electronAngle.value());
 
-  
-  comptonEffect.calculate();
+  if (this.prevIncLambda != comptonEffect.incidentLambda) {
+    console.log("inc lambda changed")
+    // user has changed incident lambda
+    comptonEffect.calculate_theta()
+    comptonEffect.calculate_phi()
+
+    photonAngle.value(comptonEffect.theta)
+    electronAngle.value(comptonEffect.phi)
+  }
+
+  else if (this.prevScaLambda != comptonEffect.scatteredLambda) {
+    console.log("sca lambda changed")
+    // user has changed scattered lambda
+    comptonEffect.calculate_theta()
+    comptonEffect.calculate_phi()
+
+    photonAngle.value(comptonEffect.theta);
+    electronAngle.value(comptonEffect.phi)
+  }
+
+  else if (this.prevTheta != comptonEffect.theta) {
+    console.log("theta changed")
+    // user has changed theta
+    comptonEffect.calculate_scatteredLambda()
+    comptonEffect.calculate_phi()
+
+    scatteredLambdaInput.value(changePowers(comptonEffect.scatteredLambda))
+    electronAngle.value(comptonEffect.phi)
+  }
+
+  else if (this.prevPhi != comptonEffect.phi) {
+    // user has changed phi
+  }
+
+  // comptonEffect.calculate();
+
   
   // Updating angles' values
 
-  photonAngle.value(comptonEffect.theta);
-  electronAngle.value(comptonEffect.phi)
+  // photonAngle.value(comptonEffect.theta);
+  // electronAngle.value(comptonEffect.phi)
   
   comptonEffect.draw();
   
   // Movement of the Particle
   
-  if (waveParticle1.progress != 0){
-    if(waveParticle1.progress < 1) {
-      waveParticle1.progress += 0.01
-    }else{
-      waveParticle1.progress = 0
-    }
-    waveParticle1.setProgress();
-  } else if (waveParticle1.progress == 0 ) {
-    if(waveParticle2.progress < 1) {
-      waveParticle2.progress += 0.01
-    }else{
-      waveParticle2.progress = 0
-      waveParticle1.progress = 0.1
-    }
-    waveParticle2.setProgress();
-  }
+  if (waveParticle1.progress < 1) {
+    // make other trail disappear
+    waveParticle2.progressTrail()
+    waveParticle2.setHidden(true)
+    waveParticle2.progress = 0
 
+    // progress first photon
+    waveParticle1.setHidden(false)
+    waveParticle1.progress += 0.01
+  } else {
+    if (waveParticle2.progress < 1) {
+      // make other trail disappear
+      waveParticle1.progressTrail()
+      waveParticle1.setHidden(true)
+      waveParticle1.progress = 
+
+      // progress second photon
+      waveParticle2.setHidden(false)
+      waveParticle2.progress += 0.01
+    } else {
+      waveParticle1.progress = 0
+  }
+  }
+  waveParticle1.setProgress();
+  waveParticle2.setProgress();
+
+  // save previous values
+  this.prevIncLambda = parseFloat(powerReverse(incidentLambdaInput.value()));
+  this.prevScaLambda = parseFloat(powerReverse(scatteredLambdaInput.value()));
+  this.prevTheta = parseFloat(photonAngle.value());
+  this.prevPhi = parseFloat(electronAngle.value());
 }
 
 function radianToDegree(rad) {
@@ -169,10 +228,10 @@ function changePowers(number){
 };
 
 function powerReverse(string){
-  console.log(string)
   let parts = string.split('*', 2);
   let mantissa = parseFloat(parts[0]);
   let exponent = parseFloat(parts[1].replace('10^',''));
   let result = mantissa * Math.pow(10, exponent);
   return result;
 }
+
