@@ -1,3 +1,4 @@
+// Currently not in use
 class Compass{
     constructor() {
         this.size = 20;

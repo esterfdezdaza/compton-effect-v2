@@ -2,73 +2,66 @@ class ComptonEffect {
     constructor() {
         this.photon1 = new  Waveparticle(-100, 0, 0, 0, 0, 0, 10, 30, 0);
         this.photon2 = new Waveparticle(0, 0, 0, 50, -100, 0, 10, 30, 0);
-        this.electron1 = new Sphere(0, 0, 0, 0, [0, 0, 255], 10)
         this.electronMoving = new LinearMovementParticle(0, 0, 0, 50, 100, 0)
-        this.scatteredLambda = 2 * Math.pow(10, -12)
-        this.incidentLambda = 1.41 * Math.pow(10, -12)
-        this.theta = Math.PI / 3
-        //Needs to calculate phi for the given example
-        this.phi = Math.PI / 3
-        this.h = 6.626 * Math.pow(10, -34) // Plank's Constant
-        this.me = 9.11 * Math.pow(10, -31) // Electron's mass
-        this.c = 3 * Math.pow(10, 8) // Light speed
-        this.static_variables = (this.me*this.c)/this.h
-        this.static_variables2= (this.h / (this.me * this.c * this.incidentLambda))
-    }
+        this.scatteredLambda = 3.41 * Math.pow(10, -12)
+        this.incidentLambda = 2 * Math.pow(10, -12)
+        this.theta = Math.PI / 3            // 60º in theory but in practice 65º
+        this.phi = Math.PI / 12             // 15,5758º in practice that has been rounded to 15º for the example
+        this.h = 6.626 * Math.pow(10, -34)  // Plank's Constant
+        this.me = 9.11 * Math.pow(10, -31)  // Electron's mass
+        this.c = 3 * Math.pow(10, 8)        // Light speed
+
+        //Need to decide if leave this parameters or put into the formula directly
+        this.staticVariable = (this.me*this.c)/this.h
+        this.staticVariable1= (this.h / (this.me * this.c * this.incidentLambda))
+    };
 
     draw() {
-      
-        // Showing elements in the screen
+        // Set up for movement
         let arrowLength = 100
         this.photon2.end = createVector(arrowLength * cos(this.theta), arrowLength * -sin(this.theta))
         this.electronMoving.end = createVector(arrowLength * cos(this.phi), arrowLength * sin(this.phi))
-
+        // Show particles
         this.photon1.show()
         this.photon2.show()
-        //this.electron1.show()
         this.electronMoving.show()
-    }
+    };
 
     calculate_theta() {
         // theta = acos( 1 - ((lambda' - lambda) * (me*c)/h ) ) 
         let theta = acos(1 - (this.scatteredLambda - this.incidentLambda) * (this.me * this.c) / this.h)
-        this.theta = theta // in rad
+        this.theta = theta // In rad
 
         console.log("Calculated theta: " + theta + " (rad), " + radianToDegree(theta) + " (deg)")
-    }
+    };
 
     calculate_phi() {
         // phi = arcot( 1 + h/(me*c*lambda)) * tan( theta/ 2 ) )
-
-        let leftEquation2 = Math.atan(1 / (1 + this.static_variables2))
-        //leftEquation2.toPrecision(5)
-
-        let phi = leftEquation2 * Math.tan( this.theta / 2 )
+        let rightEquation2 = Math.atan(1 / (1 + this.staticVariable1))
+        let phi = rightEquation2 * Math.tan( this.theta / 2 )
         this.phi = phi.toPrecision(5)
 
         console.log("Calculated phi: " + phi + ", in degrees: " + radianToDegree(phi))
-    }
+    };
     
     calculate_incidentLambda() {
         // lambda = (h/(me*c))(1 - cos(theta))) - lambda'
-        let rightEquation3 = (1 - Math.cos(this.theta))
-
-        let incidentLambda = ((1/this.static_variables) * rightEquation3) - this.scatteredLambda
+        let leftEquation = (1 - Math.cos(this.theta))
+        let incidentLambda = ((1/this.staticVariable) * leftEquation) - this.scatteredLambda
         this.incidentLambda = incidentLambda
-    }
+    };
     
     calculate_scatteredLambda() {
         // lambda' = (h/(me*c))(1 - cos(theta))) + lambda
         let rightEquation4 = (1 - Math.cos(this.theta))
-
-        let scatteredLambda = ((1/this.static_variables) * rightEquation4) + this.incidentLambda
+        let scatteredLambda = ((1/this.staticVariable) * rightEquation4) + this.incidentLambda
         this.scatteredLambda = scatteredLambda
         this.photon2.a = getFrequency(scatteredLambda)
-    }
+    };
 
     
-}
+};
 
 function getFrequency(nmValue) {
-    return floor(20 / (nmValue * Math.pow(10, 12)))
-}
+    return floor(20 / (nmValue * Math.pow(10, 12)));
+};
