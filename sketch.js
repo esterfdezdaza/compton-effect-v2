@@ -51,9 +51,10 @@ let incidentLambdaInput, scatteredLambdaInput, photonAngle, electronAngle
 let comptonEffect
 let compass
 let waveParticle1, waveParticle2
+let colour1, colour2
 
 // Create p5.js instances 
-let mySketch = new p5(myP5);
+//let mySketch = new p5(myP5);
 let mySketch2 = new p5(myP51);
 
 // Use previous values to observe which input value changed most recenlty
@@ -115,11 +116,27 @@ function setup() {
   this.prevScaLambda = parseFloat(powerReverse(scatteredLambdaInput.value()));
   this.prevTheta = parseFloat(photonAngle.value());
   this.prevPhi = parseFloat(electronAngle.value());
-}
+
+  colour1 = createSelect();
+  colour1.position(windowWidth / 60 + 60, windowHeight - 105);
+  setupColourSelector(colour1)
+  colour1.selected("yellow")
+
+  colour2 = createSelect();
+  colour2.position(windowWidth / 60 + 60, windowHeight - 65);
+  setupColourSelector(colour2)
+  colour2.selected("blue")
+
+};
 
 function draw() {
   background(255);
   lights();
+
+  comptonEffect.photon1.colour = colour1.selected()
+  comptonEffect.photon2.colour = colour1.selected()
+  comptonEffect.electronMoving.colour = colour2.selected()
+
 
   comptonEffect.scatteredLambda = parseFloat(powerReverse(scatteredLambdaInput.value()));
   comptonEffect.incidentLambda =  parseFloat(powerReverse(incidentLambdaInput.value()));
@@ -223,5 +240,18 @@ function powerReverse(string){
   let exponent = parseFloat(parts[1].replace('10^',''));
   let result = mantissa * Math.pow(10, exponent);
   return result;
+};
+
+/**
+ * Add colours to the menu
+ * @param {*} selector the selector to add options to
+ */
+function setupColourSelector(selector) {
+  selector.option('red');
+  selector.option('green');
+  selector.option('blue');
+  selector.option('yellow');
+  selector.option('magenta');
+  selector.option('black');
 };
 

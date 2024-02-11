@@ -1,13 +1,22 @@
 class Sphere {
-    constructor(x, y, z, angle, color, radius) {
+    /**
+     * 
+     * @param {*} x 
+     * @param {*} y 
+     * @param {*} z 
+     * @param {*} angle 
+     * @param {*} color 
+     * @param {*} radius 
+     */
+    constructor(x, y, z, angle, colour, radius) {
         this.pos = createVector(x, y, z)
         this.radius = radius
         this.angle = angle
-        this.color = color
+        this.colour = colour
     }
 
     show() {
-        fill(this.color)
+        fill(this.colour)
         stroke(0)
         strokeWeight(0)
         push()

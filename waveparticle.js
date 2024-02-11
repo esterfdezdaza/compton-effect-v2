@@ -1,13 +1,24 @@
 class Waveparticle {
+    /**
+     * 
+     * @param {*} x1 
+     * @param {*} y1 
+     * @param {*} z1 
+     * @param {*} x2 
+     * @param {*} y2 
+     * @param {*} z2 
+     * @param {*} a 
+     * @param {*} width 
+     */
     constructor(x1, y1, z1, x2, y2, z2, a, width) {
-    this.color = color(255, 220, 0);
+    this.colour = color(255, 220, 0);
     
     this.start = createVector(x1, y1, z1);
     this.end = createVector(x2, y2, z2);
     this.a = a;
     this.width = width; // "height" of the wave
     this.progress = 0;
-    this.particle = new Sphere(0, 0, 0, 0, this.color, 5);
+    this.particle = new Sphere(0, 0, 0, 0, this.colour, 5);
     this.trail = [];
     
     this.hidden = false // whether or not to draw the particle
@@ -37,7 +48,7 @@ class Waveparticle {
         this.particle.pos.x = output;
         this.particle.pos.y = sin(pi_val) * (this.width / 2);
         
-        this.trail.push(new Sphere(this.particle.pos.x, this.particle.pos.y, this.particle.pos.z, 0, this.color, 3));
+        this.trail.push(new Sphere(this.particle.pos.x, this.particle.pos.y, this.particle.pos.z, 0, this.colour, 3));
         if (this.trail.length > 15) {
             this.trail = this.trail.slice(1);
         }
@@ -70,6 +81,7 @@ class Waveparticle {
         rotateZ(diff + atan((this.end.y - this.start.y) / (this.end.x - this.start.x)));
 
         if (!this.hidden) {
+            this.particle.colour = this.colour
             this.particle.show();
         }
 
@@ -79,7 +91,7 @@ class Waveparticle {
         // draw trail
         let distance = this.start.dist(this.end);
         for (let i = 0; i < this.trail.length - 1; i++) {
-            let col = this.color;
+            let col = this.colour;
             stroke(col);
             strokeWeight(5 * (i / this.trail.length));
             if (abs(this.trail[i].pos.x - distance) < 1 && abs(this.trail[i].pos.y) < 1 && abs(this.trail[i + 1].pos.x) < 1 && abs(this.trail[i + 1].pos.y) < 1) {

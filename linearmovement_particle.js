@@ -1,27 +1,36 @@
 class LinearMovementParticle {
+    /**
+     * 
+     * @param {*} x1 
+     * @param {*} y1 
+     * @param {*} z1 
+     * @param {*} x2 
+     * @param {*} y2 
+     * @param {*} z2 
+     */
     constructor(x1, y1, z1, x2, y2, z2) {
-    this.color = color(0, 0, 255);
+    this.colour = color(0, 0, 255);
 
     this.start = createVector(x1, y1, z1);
     this.end = createVector(x2, y2, z2);
     this.progress = 0;
-    this.particle = new Sphere(0, 0, 0, 0, this.color, 10);
+    this.particle = new Sphere(0, 0, 0, 0, this.colour, 10);
     this.trail = [];
     
     this.hidden = false // whether or not to draw the particle
 
     this.setProgress();
-    }
+    };
     
     progressTrail() {
         if (this.trail.length > 0) {
             this.trail = this.trail.slice(1);
         }
-    }
+    };
 
     setHidden(hidden) {
         this.hidden = hidden
-    }
+    };
 
     setProgress() {
         let distance = this.start.dist(this.end);
@@ -31,11 +40,11 @@ class LinearMovementParticle {
         this.particle.pos.x = output;
         this.particle.pos.y = 0;
         
-        this.trail.push(new Sphere(this.particle.pos.x, this.particle.pos.y, this.particle.pos.z, 0, this.color, 3));
+        this.trail.push(new Sphere(this.particle.pos.x, this.particle.pos.y, this.particle.pos.z, 0, this.colour, 3));
         if (this.trail.length > 15) {
             this.trail = this.trail.slice(1);
         }
-    }
+    };
     
     show() {
         this.drawArrow()
@@ -64,6 +73,7 @@ class LinearMovementParticle {
         rotateZ(diff + atan((this.end.y - this.start.y) / (this.end.x - this.start.x)));
 
         if (!this.hidden) {
+            this.particle.colour = this.colour
             this.particle.show();
         }
 
@@ -73,7 +83,7 @@ class LinearMovementParticle {
         // draw trail
         let distance = this.start.dist(this.end);
         for (let i = 0; i < this.trail.length - 1; i++) {
-            let col = this.color;
+            let col = this.colour;
             stroke(col);
             strokeWeight(5 * (i / this.trail.length));
             if (abs(this.trail[i].pos.x - distance) < 1 && abs(this.trail[i].pos.y) < 1 && abs(this.trail[i + 1].pos.x) < 1 && abs(this.trail[i + 1].pos.y) < 1) {
@@ -82,11 +92,11 @@ class LinearMovementParticle {
             this._line(this.trail[i].pos, this.trail[i + 1].pos);
         }
         pop();
-    }
+    };
     
     _line(v1, v2) {
         line(v1.x, v1.y, v1.z, v2.x, v2.y, v2.z);
-    }
+    };
 
     drawArrow() {
         fill(0);
@@ -104,5 +114,5 @@ class LinearMovementParticle {
         rotate(angle - HALF_PI); //rotates the arrow point
         triangle(-offset * 0.5, offset, offset * 0.5, offset, 0, 0); //draws the arrow point as a triangle
         pop();
-    }
-}
+    };
+};
