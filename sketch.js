@@ -1,22 +1,4 @@
-let myP5 = function(p) {
-  p.setup = function() {
-    let canvas1 = p.createCanvas(200, 200);
-    canvas1.position(0,350);
-  }
-  p.draw = function() {
-    p.fill([255, 255, 0]);
-    p.stroke(0);
-    p.strokeWeight(0);
-    p.circle(100, 105, 5);
-    
-    p.fill([0, 0, 255]);
-    p.stroke(0);
-    p.strokeWeight(0);
-    p.circle(100, 145, 10);
-    
-  }
-}
-
+//Canvas with the compass
 let myP51 = function(p) {
   p.setup = function() {
     let canvas2 = p.createCanvas(100, 100, p.WEBGL);
@@ -53,17 +35,20 @@ let compass
 let waveParticle1, waveParticle2
 let colour1, colour2
 
-// Create p5.js instances 
-//let mySketch = new p5(myP5);
+// Create p5.js instance
 let mySketch2 = new p5(myP51);
 
 // Use previous values to observe which input value changed most recenlty
 var prevIncLambda, prevScaLambda, prevTheta, prevPhi
 
+/**
+ * Set up of the canvas
+ */
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
   createEasyCam();
 
+  // Create initial instances
   comptonEffect = new ComptonEffect();
   waveParticle1 = comptonEffect.photon1
   waveParticle2 = comptonEffect.photon2
@@ -72,6 +57,7 @@ function setup() {
   let title1 = createP("Incident Photon's Wavelength");
   title1.position(windowWidth / 160,  windowHeight - 555);
   incidentLambdaInput = createInput(changePowers(comptonEffect.incidentLambda), 'string');
+  //incidentLambdaInput = manageInputs(incidentLambdaInput, comptonEffect.incidentLambda )
   incidentLambdaInput.position(windowWidth / 160 + 200,  windowHeight - 540);
   incidentLambdaInput.size(100, 15);
 
@@ -87,13 +73,11 @@ function setup() {
   photonAngle.position(windowWidth / 160 + 40,  windowHeight - 500);
   photonAngle.size(100, 15);
 
-
   let title4 = createP('Phi');
   title4.position(windowWidth / 80,  windowHeight - 495);
   electronAngle = createInput(comptonEffect.phi, 'string');
   electronAngle.position(windowWidth / 80 + 30,  windowHeight - 480);
   electronAngle.size(100, 15);
-
 
   // Units for the boxes
   let b1 = createP('m');
@@ -126,17 +110,19 @@ function setup() {
   colour2.position(windowWidth / 60 + 60, windowHeight - 65);
   setupColourSelector(colour2)
   colour2.selected("blue")
-
 };
 
+/**
+ * Draw particles, compass and color in the canvas
+ */
 function draw() {
   background(255);
   lights();
 
+  // Defining the particle´s color
   comptonEffect.photon1.colour = colour1.selected()
   comptonEffect.photon2.colour = colour1.selected()
   comptonEffect.electronMoving.colour = colour2.selected()
-
 
   comptonEffect.scatteredLambda = parseFloat(powerReverse(scatteredLambdaInput.value()));
   comptonEffect.incidentLambda =  parseFloat(powerReverse(incidentLambdaInput.value()));
@@ -178,10 +164,10 @@ function draw() {
   else if (this.prevPhi != comptonEffect.phi) {
     // User has changed phi
   }
+
   comptonEffect.draw();
 
   // Movement of the Particle
-
   if (waveParticle1.progress < 1) {
     //  Make other trail disappear
     waveParticle2.progressTrail()
@@ -209,6 +195,7 @@ function draw() {
       comptonEffect.electronMoving.progress = 0
     }
   }
+
   waveParticle1.setProgress();
   waveParticle2.setProgress();
   comptonEffect.electronMoving.setProgress();
@@ -220,12 +207,21 @@ function draw() {
   this.prevPhi = parseFloat(electronAngle.value());
 };
 
-// To change from radians to degrees
+/**
+ * To change from radians to degrees
+ * @param {*} rad takes radians and changes into degrees
+ * @returns 
+ */
 function radianToDegree(rad) {
   return rad * (180 / Math.PI);
 };
 
-// To show powers 
+
+/**
+ * To show powers 
+ * @param {*} number numbers and power with e
+ * @returns 
+ */
 function changePowers(number){
   let exponent = Math.floor(Math.log10(Math.abs(number)));
   let mantissa = number / Math.pow(10, exponent);
@@ -233,7 +229,11 @@ function changePowers(number){
   return expressionString;
 };
 
-// To undo the change of powers to be able to do calculations with powers
+/**
+ * To undo the change of powers to be able to do calculations with powers
+ * @param {*} string string of numbers and power with 10
+ * @returns 
+ */
 function powerReverse(string){
   let parts = string.split('*', 2);
   let mantissa = parseFloat(parts[0]);
@@ -253,5 +253,18 @@ function setupColourSelector(selector) {
   selector.option('yellow');
   selector.option('magenta');
   selector.option('black');
+};
+
+function manageInputs(input, defaultValue){
+  if (input == " " || input == 0){
+    console.log("here")
+    return defaultValue
+  } else if(input == int){
+
+  }else{
+    return input
+  }
+
+
 };
 

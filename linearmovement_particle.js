@@ -1,12 +1,12 @@
 class LinearMovementParticle {
     /**
      * 
-     * @param {*} x1 
-     * @param {*} y1 
-     * @param {*} z1 
-     * @param {*} x2 
-     * @param {*} y2 
-     * @param {*} z2 
+     * @param {*} x1 x parameter of the vector begining
+     * @param {*} y1 y parameter of the vector begining
+     * @param {*} z1 z parameter of the vector begining
+     * @param {*} x2 x parameter of the vector end
+     * @param {*} y2 y parameter of the vector end
+     * @param {*} z2 z parameter of the vector end
      */
     constructor(x1, y1, z1, x2, y2, z2) {
     this.colour = color(0, 0, 255);
@@ -19,19 +19,18 @@ class LinearMovementParticle {
     
     this.hidden = false // whether or not to draw the particle
 
-    this.setProgress();
-    };
-    
-    progressTrail() {
-        if (this.trail.length > 0) {
-            this.trail = this.trail.slice(1);
-        }
     };
 
+    /**
+     * Hiddes the particle
+     */
     setHidden(hidden) {
         this.hidden = hidden
     };
 
+    /**
+     * Creates movement in the particle
+     */
     setProgress() {
         let distance = this.start.dist(this.end);
     
@@ -46,6 +45,9 @@ class LinearMovementParticle {
         }
     };
     
+    /**
+     * Shows the particle and arrow
+     */
     show() {
         this.drawArrow()
 
@@ -79,7 +81,6 @@ class LinearMovementParticle {
 
         stroke([255, 255, 0]);
         strokeWeight(1);
-        
         // draw trail
         let distance = this.start.dist(this.end);
         for (let i = 0; i < this.trail.length - 1; i++) {
@@ -94,18 +95,23 @@ class LinearMovementParticle {
         pop();
     };
     
+    /**
+     * Creates a line between two points
+     */
     _line(v1, v2) {
         line(v1.x, v1.y, v1.z, v2.x, v2.y, v2.z);
     };
 
+    /**
+     * Function to create an arrow
+     */
     drawArrow() {
         fill(0);
 
         stroke(0);
         strokeWeight(2)
-        //rotateZ(- this.angle)
         this._line(this.start, this.end);
-        
+    
         // this code is to make the arrow point
         push(); //start new drawing state
         var offset = 10;

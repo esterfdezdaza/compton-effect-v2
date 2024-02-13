@@ -10,12 +10,12 @@ class ComptonEffect {
         this.h = 6.626 * Math.pow(10, -34)  // Plank's Constant
         this.me = 9.11 * Math.pow(10, -31)  // Electron's mass
         this.c = 3 * Math.pow(10, 8)        // Light speed
-
-        //Need to decide if leave this parameters or put into the formula directly
         this.staticVariable = (this.me*this.c)/this.h
-        this.staticVariable1= (this.h / (this.me * this.c * this.incidentLambda))
     };
 
+    /**
+     * Shows the particles
+     */
     draw() {
         // Set up for movement
         let arrowLength = 100
@@ -27,6 +27,9 @@ class ComptonEffect {
         this.electronMoving.show()
     };
 
+    /**
+     * Calculates Compton's Effect formula for the angle of the scattered photon
+     */
     calculate_theta() {
         // theta = acos( 1 - ((lambda' - lambda) * (me*c)/h ) ) 
         let theta = acos(1 - (this.scatteredLambda - this.incidentLambda) * (this.me * this.c) / this.h)
@@ -35,15 +38,21 @@ class ComptonEffect {
         console.log("Calculated theta: " + theta + " (rad), " + radianToDegree(theta) + " (deg)")
     };
 
+    /**
+     * Calculates then angle phi
+     */
     calculate_phi() {
         // phi = arcot( 1 + h/(me*c*lambda)) * tan( theta/ 2 ) )
-        let rightEquation2 = Math.atan(1 / (1 + this.staticVariable1))
+        let rightEquation2 = Math.atan(1 / (1 + (this.h / (this.me * this.c * this.incidentLambda))))
         let phi = rightEquation2 * Math.tan( this.theta / 2 )
         this.phi = phi.toPrecision(5)
 
         console.log("Calculated phi: " + phi + ", in degrees: " + radianToDegree(phi))
     };
     
+    /**
+     * Calculates Compton's Effect formula for the Incident Lambda
+     */
     calculate_incidentLambda() {
         // lambda = (h/(me*c))(1 - cos(theta))) - lambda'
         let leftEquation = (1 - Math.cos(this.theta))
@@ -51,6 +60,9 @@ class ComptonEffect {
         this.incidentLambda = incidentLambda
     };
     
+    /**
+     * Calculates Compton's Effect formula for the Scattered Lambda
+     */
     calculate_scatteredLambda() {
         // lambda' = (h/(me*c))(1 - cos(theta))) + lambda
         let rightEquation4 = (1 - Math.cos(this.theta))
@@ -58,10 +70,11 @@ class ComptonEffect {
         this.scatteredLambda = scatteredLambda
         this.photon2.a = getFrequency(scatteredLambda)
     };
-
-    
 };
 
+/**
+ * Returns a number for the particle's speed
+ */
 function getFrequency(nmValue) {
     return floor(20 / (nmValue * Math.pow(10, 12)));
 };

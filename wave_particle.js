@@ -1,14 +1,14 @@
 class Waveparticle {
     /**
      * 
-     * @param {*} x1 
-     * @param {*} y1 
-     * @param {*} z1 
-     * @param {*} x2 
-     * @param {*} y2 
-     * @param {*} z2 
-     * @param {*} a 
-     * @param {*} width 
+     * @param {*} x1 x parameter of the vector begining
+     * @param {*} y1 y parameter of the vector begining
+     * @param {*} z1 z parameter of the vector begining
+     * @param {*} x2 x parameter of the vector end
+     * @param {*} y2 y parameter of the vector end
+     * @param {*} z2 z parameter of the vector end
+     * @param {*} a amount of peaks
+     * @param {*} width height of the wave
      */
     constructor(x1, y1, z1, x2, y2, z2, a, width) {
     this.colour = color(255, 220, 0);
@@ -16,7 +16,7 @@ class Waveparticle {
     this.start = createVector(x1, y1, z1);
     this.end = createVector(x2, y2, z2);
     this.a = a;
-    this.width = width; // "height" of the wave
+    this.width = width; 
     this.progress = 0;
     this.particle = new Sphere(0, 0, 0, 0, this.colour, 5);
     this.trail = [];
@@ -26,21 +26,27 @@ class Waveparticle {
     this.setProgress();
     }
     
+    /**
+     * Verifies the progress of the trail
+     */
     progressTrail() {
         if (this.trail.length > 0) {
             this.trail = this.trail.slice(1);
         }
     }
 
+    /**
+     * Hiddes the particle
+     */
     setHidden(hidden) {
-        this.hidden = hidden
+        this.hidden = hidden;
     }
 
+    /**
+     * Creates movement in the particle
+     */
     setProgress() {
         let distance = this.start.dist(this.end);
-        /* Note, "slope" below is a constant for given numbers, so if you are calculating
-        a lot of output values, it makes sense to calculate it once. It also makes
-        understanding the code easier */
         
         let output = distance * this.progress;
         let pi_val = ((this.a * PI) / distance) * output;
@@ -54,6 +60,9 @@ class Waveparticle {
         }
     }
     
+    /**
+     * Shows the particle, arrow and trail 
+     */
     show() {
         this.drawArrow()
 
@@ -102,10 +111,16 @@ class Waveparticle {
         pop();
     }
     
+    /**
+     * Creates a line between two points
+     */
     _line(v1, v2) {
         line(v1.x, v1.y, v1.z, v2.x, v2.y, v2.z);
     }
 
+    /**
+     * Function to create an arrow
+     */
     drawArrow() {
         fill(0);
 
