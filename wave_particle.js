@@ -11,8 +11,9 @@ class Waveparticle {
      * @param {*} width height of the wave
      */
     constructor(x1, y1, z1, x2, y2, z2, a, width) {
-    this.colour = color(255, 220, 0);
-    
+    this.colour = color("yellow");
+    this.colourArrow = 255 // Has to be 0 or 255
+
     this.start = createVector(x1, y1, z1);
     this.end = createVector(x2, y2, z2);
     this.a = a;
@@ -123,8 +124,7 @@ class Waveparticle {
      */
     drawArrow() {
         fill(0);
-
-        stroke(0);
+        stroke(this.colourArrow);
         strokeWeight(2)
         //rotateZ(- this.angle)
         this._line(this.start, this.end);

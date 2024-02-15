@@ -10,6 +10,7 @@ class LinearMovementParticle {
      */
     constructor(x1, y1, z1, x2, y2, z2) {
     this.colour = color(0, 0, 255);
+    this.colourArrow = 0 // Has to be the value 0 or 255
 
     this.start = createVector(x1, y1, z1);
     this.end = createVector(x2, y2, z2);
@@ -107,8 +108,7 @@ class LinearMovementParticle {
      */
     drawArrow() {
         fill(0);
-
-        stroke(0);
+        stroke(this.colourArrow);
         strokeWeight(2)
         this._line(this.start, this.end);
     

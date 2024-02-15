@@ -6,7 +6,7 @@ let myP51 = function(p) {
     p.createEasyCam();
   }
   p.draw = function() {
-    p.background(255);
+    p.background(colourBackgroud);
 
     //Creating the compass
     p.push();
@@ -33,7 +33,8 @@ let incidentLambdaInput, scatteredLambdaInput, photonAngle, electronAngle
 let comptonEffect
 let compass
 let waveParticle1, waveParticle2
-let colour1, colour2
+let colour1, colour2, colourText, theme, colourBackgroud, themeFirst
+let title1, title2, title3, title4, b1, b2, b3, b4, photonParticle, electronParticle, themeTitle
 
 // Create p5.js instance
 let mySketch2 = new p5(myP51);
@@ -52,48 +53,50 @@ function setup() {
   comptonEffect = new ComptonEffect();
   waveParticle1 = comptonEffect.photon1
   waveParticle2 = comptonEffect.photon2
+  colourText = 255
+  colourBackgroud = 255
 
   // Input boxes
-  let title1 = createP("Incident Photon's Wavelength");
-  title1.position(windowWidth / 160,  windowHeight - 555);
+  title1 = createP("Incident Photon's Wavelength");
+  title1.position(10, 0);
   incidentLambdaInput = createInput(changePowers(comptonEffect.incidentLambda), 'string');
   //incidentLambdaInput = manageInputs(incidentLambdaInput, comptonEffect.incidentLambda )
-  incidentLambdaInput.position(windowWidth / 160 + 200,  windowHeight - 540);
+  incidentLambdaInput.position(210, 15);
   incidentLambdaInput.size(100, 15);
 
-  let title2 = createP("Scattered Photon's Wavelength");
-  title2.position(windowWidth / 160,  windowHeight - 535);
+  title2 = createP("Scattered Photon's Wavelength");
+  title2.position(10, 20);
   scatteredLambdaInput = createInput(changePowers(comptonEffect.scatteredLambda), 'string');
-  scatteredLambdaInput.position(windowWidth / 160 + 205,  windowHeight - 520);
+  scatteredLambdaInput.position(210, 35);
   scatteredLambdaInput.size(100, 15);
 
-  let title3 = createP('Theta');
-  title3.position(windowWidth / 160,  windowHeight - 515);
+  title3 = createP('Theta');
+  title3.position(10, 40);
   photonAngle = createInput(comptonEffect.theta, 'string');
-  photonAngle.position(windowWidth / 160 + 40,  windowHeight - 500);
+  photonAngle.position(210, 55);
   photonAngle.size(100, 15);
 
-  let title4 = createP('Phi');
-  title4.position(windowWidth / 80,  windowHeight - 495);
+  title4 = createP('Phi');
+  title4.position(10, 60);
   electronAngle = createInput(comptonEffect.phi, 'string');
-  electronAngle.position(windowWidth / 80 + 30,  windowHeight - 480);
+  electronAngle.position(210, 75);
   electronAngle.size(100, 15);
 
   // Units for the boxes
-  let b1 = createP('m');
-  b1.position(windowWidth / 80 + 315,  windowHeight - 555);
-  let b2 = createP('m');
-  b2.position(windowWidth / 80 + 320 , windowHeight - 535);
-  let b3 = createP('Rad');
-  b3.position(windowWidth / 80 + 150, windowHeight - 515);
-  let b4 = createP('Rad');
-  b4.position(windowWidth / 80 + 140, windowHeight - 495);
+  b1 = createP('m');
+  b1.position(325, 0);
+  b2 = createP('m');
+  b2.position(325, 20 );
+  b3 = createP('Rad');
+  b3.position(325, 40);
+  b4 = createP('Rad');
+  b4.position(325, 60);
 
   // Reference Box
-  let photonParticle = createP('Photon');
-  photonParticle.position(windowWidth / 60, windowHeight - 120);
-  let electronParticle = createP('Electron');
-  electronParticle.position(windowWidth / 60, windowHeight - 80);
+  photonParticle = createP('Photon');
+  photonParticle.position(10, windowHeight - 120);
+  electronParticle = createP('Electron');
+  electronParticle.position(10, windowHeight - 80);
 
   // initialise previous values
   this.prevIncLambda = parseFloat(powerReverse(incidentLambdaInput.value()));
@@ -101,28 +104,45 @@ function setup() {
   this.prevTheta = parseFloat(photonAngle.value());
   this.prevPhi = parseFloat(electronAngle.value());
 
+  // Particle's color menu
   colour1 = createSelect();
-  colour1.position(windowWidth / 60 + 60, windowHeight - 105);
-  setupColourSelector(colour1)
-  colour1.selected("yellow")
+  colour1.position(70, windowHeight - 105);
+  setupColourSelector(colour1);
+  colour1.selected("yellow");
 
   colour2 = createSelect();
-  colour2.position(windowWidth / 60 + 60, windowHeight - 65);
-  setupColourSelector(colour2)
-  colour2.selected("blue")
+  colour2.position(70, windowHeight - 65);
+  setupColourSelector(colour2);
+  colour2.selected("blue");
+
+  // Theme menu
+  themeTitle = createP("Theme");
+  themeTitle.position(windowWidth - 130,  windowHeight - 555);
+  theme = createSelect();
+  theme.position(windowWidth - 80,  windowHeight - 540);
+  setupThemeSelector(theme);
+  theme.selected("original")
+  //themeFirst = "original"
 };
 
 /**
  * Draw particles, compass and color in the canvas
  */
 function draw() {
-  background(255);
+  background(colourBackgroud);
   lights();
 
   // Defining the particle´s color
-  comptonEffect.photon1.colour = colour1.selected()
-  comptonEffect.photon2.colour = colour1.selected()
-  comptonEffect.electronMoving.colour = colour2.selected()
+  //comptonEffect.photon1.colour = colour1.selected()
+  //comptonEffect.photon2.colour = colour1.selected()
+  //comptonEffect.electronMoving.colour = colour2.selected()
+
+  //Defining theme
+ 
+  themeSetUp(theme.selected())
+  themeFirst = theme.selected()
+
+  //Update values of the input boxes
 
   comptonEffect.scatteredLambda = parseFloat(powerReverse(scatteredLambdaInput.value()));
   comptonEffect.incidentLambda =  parseFloat(powerReverse(incidentLambdaInput.value()));
@@ -162,7 +182,7 @@ function draw() {
   }
 
   else if (this.prevPhi != comptonEffect.phi) {
-    // User has changed phi
+    // User has changed phi TODO***********
   }
 
   comptonEffect.draw();
@@ -195,7 +215,7 @@ function draw() {
       comptonEffect.electronMoving.progress = 0
     }
   }
-
+  
   waveParticle1.setProgress();
   waveParticle2.setProgress();
   comptonEffect.electronMoving.setProgress();
@@ -253,8 +273,108 @@ function setupColourSelector(selector) {
   selector.option('yellow');
   selector.option('magenta');
   selector.option('black');
+
 };
 
+function setupThemeSelector(selector){
+  selector.option('original');
+  selector.option('dark');
+  selector.option('cream');
+  selector.option('pastel');
+}
+//Need to fix that when is first time chosen the theme, it updates
+// Problem with dark entering second time
+
+
+function themeSetUp(theme){
+  if (theme == "dark"){
+    console.log(themeFirst)
+    if ((colour1.selected() == 'yellow' && colour2.selected() == 'blue') || themeFirst != "dark"){
+      console.log(themeFirst)
+      comptonEffect.photon1.colour = color("yellow")
+      comptonEffect.photon2.colour = color("yellow")
+      comptonEffect.electronMoving.colour = color("magenta")
+      themeFirst = "dark"
+    }else{
+      console.log("here")
+      comptonEffect.photon1.colour = colour1.selected()
+      comptonEffect.photon2.colour = colour1.selected()
+      comptonEffect.electronMoving.colour = colour2.selected()
+    }
+    colourBackgroud = color("black")
+    colourElements(255)
+
+  }else if(theme == "cream"){
+    if ((colour1.selected() == 'yellow' && colour2.selected() == 'blue')|| themeFirst != "cream"){
+      console.log("here")
+      comptonEffect.photon1.colour = color("magenta")
+      comptonEffect.photon2.colour = color("magenta")
+      comptonEffect.electronMoving.colour = color("blue")
+      themeFirst = "cream"
+    }else{
+      console.log("here")
+      comptonEffect.photon1.colour = colour1.selected()
+      comptonEffect.photon2.colour = colour1.selected()
+      comptonEffect.electronMoving.colour = colour2.selected()
+    }
+    colourBackgroud = color(255, 253, 208)
+    colourElements(0)
+
+  }else if(theme == "pastel"){
+    if (colour1.selected() == 'yellow' && colour2.selected() == 'blue'){
+      console.log("here")
+      comptonEffect.photon1.colour = color("yellow")
+      comptonEffect.photon2.colour = color("yellow")
+      comptonEffect.electronMoving.colour = color("magenta")
+    }else{
+      console.log("here")
+      comptonEffect.photon1.colour = colour1.selected()
+      comptonEffect.photon2.colour = colour1.selected()
+      comptonEffect.electronMoving.colour = colour2.selected()
+    }
+    colourBackgroud = color(162, 192, 224)
+    colourElements(0)
+
+  }else{
+    // Original theme otherwise
+    if (colour1.selected() == 'yellow' && colour2.selected() == 'blue'){
+      console.log("here")
+      comptonEffect.photon1.colour = color("yellow")
+      comptonEffect.photon2.colour = color("yellow")
+      comptonEffect.electronMoving.colour = color("blue")
+    }else{
+      console.log("here")
+      comptonEffect.photon1.colour = colour1.selected()
+      comptonEffect.photon2.colour = colour1.selected()
+      comptonEffect.electronMoving.colour = colour2.selected()
+    }
+    colourBackgroud = color("white")
+    colourElements("black")
+  };
+};
+
+function colourElements(elementColour){
+  title1.style('color', color(elementColour));
+  title2.style('color', color(elementColour));
+  title3.style('color', color(elementColour));
+  title4.style('color', color(elementColour));
+  
+  b1.style('color', color(elementColour));
+  b2.style('color', color(elementColour));
+  b3.style('color', color(elementColour));
+  b4.style('color', color(elementColour));
+
+  themeTitle.style('color', color(elementColour));
+  photonParticle.style('color', color(elementColour));
+  electronParticle.style('color', color(elementColour));
+
+  comptonEffect.photon1.colourArrow = elementColour
+  comptonEffect.photon2.colourArrow = elementColour
+  comptonEffect.electronMoving.colourArrow = elementColour
+
+}
+
+// TODO***********
 function manageInputs(input, defaultValue){
   if (input == " " || input == 0){
     console.log("here")
@@ -265,6 +385,12 @@ function manageInputs(input, defaultValue){
     return input
   }
 
-
 };
+
+// TODO***********
+
+function mouseClicked() {
+  console.log('Mouse clicked at:', mouseX, mouseY);
+}
+
 
