@@ -2,8 +2,11 @@
 let myP51 = function(p) {
   p.setup = function() {
     let canvas2 = p.createCanvas(100, 100, p.WEBGL);
-    canvas2.position(p.windowWidth / 2 + 120, p.windowHeight / 2 + 120);
+    canvas2.position(p.windowWidth / 2 + 80, p.windowHeight / 2 + 150);
     p.createEasyCam();
+    xColour = "magenta"
+    yColour = "green"
+    zColour = "blue"
   }
   p.draw = function() {
     p.background(colourBackground);
@@ -11,17 +14,17 @@ let myP51 = function(p) {
     //Creating the compass
     p.push();
     // X-axis (red)
-    p.stroke(255, 0, 0);
+    p.stroke(xColour);
     p.strokeWeight(4);
     p.line(0, 0, 0, 30, 0, 0);
     
     // Y-axis (green)
-    p.stroke(0, 255, 0);
+    p.stroke(yColour);
     p.strokeWeight(4);
     p.line(0, 0, 0, 0, 30, 0);
 
     // Z-axis (blue)
-    p.stroke(0, 0, 255);
+    p.stroke(zColour);
     p.strokeWeight(4);
     p.line(0, 0, 0, 0, 0, 30);
     p.pop();
@@ -33,10 +36,10 @@ let incidentLambdaInput, scatteredLambdaInput, photonAngle, electronAngle
 let comptonEffect
 let compass
 let waveParticle1, waveParticle2
-let colour1, colour2, colourText, theme, colourBackground, prevTheme
+let colour1, colour2, colourText, theme, colourBackground, prevTheme, xColour, yColour, zColour
 let title1, title2, title3, title4, b1, b2, b3, b4, photonParticle, electronParticle, themeTitle
 
-// Create p5.js instance
+// Create p5.js instance  
 let mySketch2 = new p5(myP51);
 
 // Use previous values to observe which input value changed most recenlty
@@ -46,9 +49,12 @@ var prevIncLambda, prevScaLambda, prevTheta, prevPhi
  * Set up of the canvas
  */
 function setup() {
-  createCanvas(windowWidth, windowHeight, WEBGL);
+  let canvas2 = createCanvas(100, 100, WEBGL);
+  canvas2.position(windowWidth / 2 + 80, windowHeight / 2 + 150);
   createEasyCam();
 
+  createCanvas(windowWidth, windowHeight, WEBGL);
+  createEasyCam();
   // Create initial instances
   comptonEffect = new ComptonEffect();
   waveParticle1 = comptonEffect.photon1
@@ -266,48 +272,45 @@ function powerReverse(string){
  * @param {*} selector the selector to add options to
  */
 function setupColourSelector(selector) {
-  selector.option('red');
-  selector.option('green');
-  selector.option('blue');
-  selector.option('yellow');
-  selector.option('magenta');
-  selector.option('black');
-
+  options = ['red', 'green', 'blue', 'yellow', 'magenta', 'black']
+  for (let i = 0; i < options.length; i++){
+    selector.option(options[i]);
+  };
 };
 
 function setupThemeSelector(selector){
-  selector.option('original');
-  selector.option('dark');
-  selector.option('cream');
-  selector.option('pastel');
+  options = ['original', 'dark', 'cream', 'pastel']
+  for (let i = 0; i < options.length; i++){
+    selector.option(options[i]);
+  }
 };
 
 function themeSetUp(theme, prevTheme){
   if (theme == "dark"){
-    // When it is the first time this theme is chosen: setup theme colors
+    // If it is the first time the theme is chosen: setup theme colors
     if (prevTheme != "dark"){
-      colourElements(255, "yellow", "magenta")
-    // Theme is the same, so you can choose any color for now
+      colourElements(255, "yellow", "magenta", ["yellow", "green", "blue"])
+    // Otherwise theme is the same, so you can choose any color for now
     }else{
-      colourElements(255, colour1.selected(), colour2.selected())
+      colourElements(255, colour1.selected(), colour2.selected(), ["yellow", "green", "blue"])
     }
     colourBackground = color("black")
     return "dark"
 
   }else if(theme == "cream"){
     if (prevTheme != "cream"){
-      colourElements("black", "magenta", "blue")
+      colourElements("black", "magenta", "blue", ["yellow", "green", "blue"])
     }else{
-      colourElements("black", colour1.selected(), colour2.selected())
+      colourElements("black", colour1.selected(), colour2.selected(), ["yellow", "green", "blue"])
     }
     colourBackground = color(255, 253, 208)
     return "cream"
 
   }else if(theme == "pastel"){
     if (prevTheme != "pastel"){
-      colourElements(0, "yellow", "magenta")
+      colourElements(0, "yellow", "magenta", ["magenta", "green", "yellow"])
     }else{
-      colourElements("black", colour1.selected(), colour2.selected())
+      colourElements("black", colour1.selected(), colour2.selected(), ["magenta", "green", "yellow"])
     }
     colourBackground = color(162, 192, 224)
     return "pastel"
@@ -315,25 +318,27 @@ function themeSetUp(theme, prevTheme){
   // Original theme otherwise
   }else{
     if (prevTheme != "original"){
-      colourElements("black", "yellow", "blue")
+      colourElements("black", "yellow", "blue", ["magenta", "green", "blue"])
     }else{
-      colourElements("black", colour1.selected(), colour2.selected())
+      colourElements("black", colour1.selected(), colour2.selected(), ["magenta", "green", "blue"])
     }
     colourBackground = color("white")
     return "original"
   };
 };
 
-function colourElements(elementColour, particle1, particle2){
-  title1.style('color', color(elementColour));
-  title2.style('color', color(elementColour));
-  title3.style('color', color(elementColour));
-  title4.style('color', color(elementColour));
-  
-  b1.style('color', color(elementColour));
-  b2.style('color', color(elementColour));
-  b3.style('color', color(elementColour));
-  b4.style('color', color(elementColour));
+function colourElements(elementColour, particle1, particle2, compass){
+  let titles = [title1, title2, title3, title4];
+  for (let i = 0; i < titles.length; i++){
+    titles[i].style('color', color(elementColour));
+  };
+  let buttons = [b1, b2, b3, b4];
+  for (let i = 0; i < buttons.length; i++){
+    buttons[i].style('color', color(elementColour));
+  };
+  xColour = compass[0]
+  yColour = compass[1]
+  zColour = compass[2]
 
   themeTitle.style('color', color(elementColour));
   photonParticle.style('color', color(elementColour));
