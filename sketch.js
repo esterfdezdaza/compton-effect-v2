@@ -299,9 +299,9 @@ function themeSetUp(theme, prevTheme){
 
   }else if(theme == "cream"){
     if (prevTheme != "cream"){
-      colourElements("black", "magenta", "blue", ["yellow", "green", "blue"])
+      colourElements("black", "magenta", "blue", ["magenta", "green", "blue"])
     }else{
-      colourElements("black", colour1.selected(), colour2.selected(), ["yellow", "green", "blue"])
+      colourElements("black", colour1.selected(), colour2.selected(), ["magenta", "green", "blue"])
     }
     colourBackground = color(255, 253, 208)
     return "cream"
