@@ -280,101 +280,51 @@ function setupThemeSelector(selector){
   selector.option('dark');
   selector.option('cream');
   selector.option('pastel');
-}
-//Need to fix that when is first time chosen the theme, it updates
-// Problem with dark entering second time
+};
 
 function themeSetUp(theme, prevTheme){
   if (theme == "dark"){
     // When it is the first time this theme is chosen: setup theme colors
     if (prevTheme != "dark"){
-      console.log(prevTheme)
-      colour1.selected("yellow")
-      comptonEffect.photon1.colour = color("yellow")
-      colour1.selected("yellow")
-      comptonEffect.photon2.colour = color("yellow")
-      colour2.selected("magenta")
-      comptonEffect.electronMoving.colour = color("magenta")
-    console.log(prevTheme)
+      colourElements(255, "yellow", "magenta")
     // Theme is the same, so you can choose any color for now
     }else{
-      console.log("here")
-      comptonEffect.photon1.colour = colour1.selected()
-      comptonEffect.photon2.colour = colour1.selected()
-      comptonEffect.electronMoving.colour = colour2.selected()
+      colourElements(255, colour1.selected(), colour2.selected())
     }
     colourBackground = color("black")
-    colourElements(255)
     return "dark"
 
   }else if(theme == "cream"){
-    // When it is the first time this theme is chosen: setup theme colors
     if (prevTheme != "cream"){
-      console.log("here")
-      colour1.selected("magenta")
-      comptonEffect.photon1.colour = color("magenta")
-      colour1.selected("magenta")
-      comptonEffect.photon2.colour = color("magenta")
-      colour2.selected("blue")
-      comptonEffect.electronMoving.colour = color("blue")
-    // Theme is the same, so you can choose any color for now
+      colourElements("black", "magenta", "blue")
     }else{
-      console.log("there")
-      comptonEffect.photon1.colour = colour1.selected()
-      comptonEffect.photon2.colour = colour1.selected()
-      comptonEffect.electronMoving.colour = colour2.selected()
+      colourElements("black", colour1.selected(), colour2.selected())
     }
     colourBackground = color(255, 253, 208)
-    colourElements(0)
     return "cream"
 
   }else if(theme == "pastel"){
-    // When it is the first time this theme is chosen: setup theme colors
     if (prevTheme != "pastel"){
-      console.log("here")
-      colour1.selected("yellow")
-      comptonEffect.photon1.colour = color("yellow")
-      colour1.selected("yellow")
-      comptonEffect.photon2.colour = color("yellow")
-      colour2.selected("magenta")
-      comptonEffect.electronMoving.colour = color("magenta")
-    // Theme is the same, so you can choose any color for now
+      colourElements(0, "yellow", "magenta")
     }else{
-      console.log("there")
-      comptonEffect.photon1.colour = colour1.selected()
-      comptonEffect.photon2.colour = colour1.selected()
-      comptonEffect.electronMoving.colour = colour2.selected()
+      colourElements("black", colour1.selected(), colour2.selected())
     }
     colourBackground = color(162, 192, 224)
-    colourElements(0)
     return "pastel"
 
   // Original theme otherwise
   }else{
-    // When it is the first time this theme is chosen: setup theme colors
     if (prevTheme != "original"){
-      console.log("here")
-      colour1.selected("yellow")
-      comptonEffect.photon1.colour = color("yellow")
-      colour1.selected("yellow")
-      comptonEffect.photon2.colour = color("yellow")
-      colour2.selected("blue")
-      comptonEffect.electronMoving.colour = color("blue")
-    // Theme is the same, so you can choose any color for now
+      colourElements("black", "yellow", "blue")
     }else{
-      console.log("there")
-      comptonEffect.photon1.colour = colour1.selected()
-      comptonEffect.photon2.colour = colour1.selected()
-      comptonEffect.electronMoving.colour = colour2.selected()
+      colourElements("black", colour1.selected(), colour2.selected())
     }
     colourBackground = color("white")
-    colourElements("black")
     return "original"
-
   };
 };
 
-function colourElements(elementColour){
+function colourElements(elementColour, particle1, particle2){
   title1.style('color', color(elementColour));
   title2.style('color', color(elementColour));
   title3.style('color', color(elementColour));
@@ -393,7 +343,13 @@ function colourElements(elementColour){
   comptonEffect.photon2.colourArrow = elementColour;
   comptonEffect.electronMoving.colourArrow = elementColour;
 
-}
+  colour1.selected(particle1);
+  comptonEffect.photon1.colour = color(particle1);
+  colour1.selected(particle1);
+  comptonEffect.photon2.colour = color(particle1);
+  colour2.selected(particle2);
+  comptonEffect.electronMoving.colour = color(particle2);
+};
 
 // TODO***********
 function manageInputs(input, defaultValue){
