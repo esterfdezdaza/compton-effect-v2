@@ -1,36 +1,3 @@
-//Canvas with the compass
-let myP51 = function(p) {
-  p.setup = function() {
-    let canvas2 = p.createCanvas(100, 100, p.WEBGL);
-    canvas2.position(p.windowWidth / 2 + 80, p.windowHeight / 2 + 150);
-    p.createEasyCam();
-    xColour = "magenta"
-    yColour = "green"
-    zColour = "blue"
-  }
-  p.draw = function() {
-    p.background(colourBackground);
-
-    //Creating the compass
-    p.push();
-    // X-axis (red)
-    p.stroke(xColour);
-    p.strokeWeight(4);
-    p.line(0, 0, 0, 30, 0, 0);
-    
-    // Y-axis (green)
-    p.stroke(yColour);
-    p.strokeWeight(4);
-    p.line(0, 0, 0, 0, 30, 0);
-
-    // Z-axis (blue)
-    p.stroke(zColour);
-    p.strokeWeight(4);
-    p.line(0, 0, 0, 0, 0, 30);
-    p.pop();
-  }
-}
-
 // Initial variables
 let incidentLambdaInput, scatteredLambdaInput, photonAngle, electronAngle
 let comptonEffect
@@ -39,22 +6,21 @@ let waveParticle1, waveParticle2
 let colour1, colour2, colourText, theme, colourBackground, prevTheme, xColour, yColour, zColour
 let title1, title2, title3, title4, b1, b2, b3, b4, photonParticle, electronParticle, themeTitle
 
-// Create p5.js instance  
-let mySketch2 = new p5(myP51);
 
 // Use previous values to observe which input value changed most recenlty
 var prevIncLambda, prevScaLambda, prevTheta, prevPhi
 
 /**
- * Set up of the canvas
+ * Set up of the canvas and its elements
  */
 function setup() {
-  let canvas2 = createCanvas(100, 100, WEBGL);
-  canvas2.position(windowWidth / 2 + 80, windowHeight / 2 + 150);
-  createEasyCam();
-
   createCanvas(windowWidth, windowHeight, WEBGL);
   createEasyCam();
+
+  graphics = createGraphics(windowWidth, windowHeight, WEBGL)
+  graphics.createEasyCam();
+  graphics.position(50, 50)
+  
   // Create initial instances
   comptonEffect = new ComptonEffect();
   waveParticle1 = comptonEffect.photon1
@@ -62,6 +28,9 @@ function setup() {
   colourText = 255
   colourBackground = 255
   prevTheme = "original"
+  xColour = "magenta"
+  yColour = "green"
+  zColour = "blue"
 
   // Input boxes
   title1 = createP("Incident Photon's Wavelength");
@@ -135,20 +104,37 @@ function setup() {
  * Draw particles, compass and color in the canvas
  */
 function draw() {
+
+  // Compass
+  graphics.clear()
+  graphics.lights();
+  graphics.push();
+  graphics.show()
+  
+  // X-axis (red)
+  graphics.stroke(xColour);
+  graphics.strokeWeight(4);
+  graphics.line(0, 0, 0, 30, 0, 0);
+  
+  // Y-axis (green)
+  graphics.stroke(yColour);
+  graphics.strokeWeight(4);
+  graphics.line(0, 0, 0, 0, 30, 0);
+
+  // Z-axis (blue)
+  graphics.stroke(zColour);
+  graphics.strokeWeight(4);
+  graphics.line(0, 0, 0, 0, 0, 30);
+  graphics.pop();
+
   background(colourBackground);
   lights();
 
-  // Defining the particle´s color
-  //comptonEffect.photon1.colour = colour1.selected()
-  //comptonEffect.photon2.colour = colour1.selected()
-  //comptonEffect.electronMoving.colour = colour2.selected()
-
-  //Defining theme
+  //Defining theme and colors
   prevTheme = themeSetUp(theme.selected(), prevTheme)
   console.log(prevTheme)
 
   //Update values of the input boxes
-
   comptonEffect.scatteredLambda = parseFloat(powerReverse(scatteredLambdaInput.value()));
   comptonEffect.incidentLambda =  parseFloat(powerReverse(incidentLambdaInput.value()));
   comptonEffect.theta =  parseFloat(photonAngle.value());
