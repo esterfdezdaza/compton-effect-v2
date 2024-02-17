@@ -6,6 +6,7 @@ let waveParticle1, waveParticle2
 let colour1, colour2, colourText, theme, colourBackground, prevTheme, xColour, yColour, zColour
 let title1, title2, title3, title4, b1, b2, b3, b4, photonParticle, electronParticle, themeTitle
 
+let camera
 
 // Use previous values to observe which input value changed most recenlty
 var prevIncLambda, prevScaLambda, prevTheta, prevPhi
@@ -16,14 +17,14 @@ var prevIncLambda, prevScaLambda, prevTheta, prevPhi
 function setup() {
   // Setup normal canvas
   let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
-  createEasyCam();
-  canvas.id("mainCanvas");
-  canvas = select("mainCanvas");
+  camera = createEasyCam();
+  //canvas.id("mainCanvas");
+  //canvas = select("mainCanvas");
   
   // Setup compass canvas
   graphics = createGraphics(windowWidth, windowHeight, WEBGL)
-  graphics.createEasyCam();
-  graphics.position(50, 50)
+  //graphics.createEasyCam();
+  graphics.position(200, 200)
   
   // Create initial instances
   comptonEffect = new ComptonEffect();
@@ -108,6 +109,13 @@ function setup() {
  * Draw particles, compass and color in the canvas
  */
 function draw() {
+
+  graphics.reset()
+  let rotations = camera.getRotation()
+  // console.log(rotations)
+  graphics.rotateX(rotations[1]);
+  graphics.rotateY(rotations[2]);
+  graphics.rotateZ(rotations[3]);
 
   // Compass
   graphics.clear()
