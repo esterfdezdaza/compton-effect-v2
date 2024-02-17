@@ -14,9 +14,13 @@ var prevIncLambda, prevScaLambda, prevTheta, prevPhi
  * Set up of the canvas and its elements
  */
 function setup() {
-  createCanvas(windowWidth, windowHeight, WEBGL);
+  // Setup normal canvas
+  let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
   createEasyCam();
-
+  canvas.id("mainCanvas");
+  canvas = select("mainCanvas");
+  
+  // Setup compass canvas
   graphics = createGraphics(windowWidth, windowHeight, WEBGL)
   graphics.createEasyCam();
   graphics.position(50, 50)
@@ -93,9 +97,9 @@ function setup() {
 
   // Theme menu
   themeTitle = createP("Theme");
-  themeTitle.position(windowWidth - 130,  windowHeight - 555);
+  themeTitle.position(windowWidth - 50, 15);
   theme = createSelect();
-  theme.position(windowWidth - 80,  windowHeight - 540);
+  theme.position(windowWidth, 30);
   setupThemeSelector(theme);
   theme.selected("original");
 };
