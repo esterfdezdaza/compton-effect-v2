@@ -33,7 +33,9 @@ class ComptonEffect {
     calculate_theta() {
         // theta = acos( 1 - ((lambda' - lambda) * (me*c)/h ) ) 
         let theta = acos(1 - (this.scatteredLambda - this.incidentLambda) * (this.me * this.c) / this.h)
-        this.theta = theta // In rad
+        if (!isNaN(theta)) {
+            this.theta = theta // In rad
+        }
 
         console.log("Calculated theta: " + theta + " (rad), " + radianToDegree(theta) + " (deg)")
     };
@@ -45,8 +47,9 @@ class ComptonEffect {
         // phi = arcot( 1 + h/(me*c*lambda)) * tan( theta/ 2 ) )
         let rightEquation2 = Math.atan(1 / (1 + (this.h / (this.me * this.c * this.incidentLambda))))
         let phi = rightEquation2 * Math.tan( this.theta / 2 )
-        this.phi = phi.toPrecision(5)
-
+        if (!isNaN(phi)) {
+            this.phi = phi.toPrecision(5)
+        }
         console.log("Calculated phi: " + phi + ", in degrees: " + radianToDegree(phi))
     };
     
@@ -57,7 +60,9 @@ class ComptonEffect {
         // lambda = (h/(me*c))(1 - cos(theta))) - lambda'
         let leftEquation = (1 - Math.cos(this.theta))
         let incidentLambda = ((1/this.staticVariable) * leftEquation) - this.scatteredLambda
-        this.incidentLambda = incidentLambda
+        if (!isNaN(incidentLambda)) {
+            this.incidentLambda = incidentLambda
+        }
     };
     
     /**
@@ -67,8 +72,10 @@ class ComptonEffect {
         // lambda' = (h/(me*c))(1 - cos(theta))) + lambda
         let rightEquation4 = (1 - Math.cos(this.theta))
         let scatteredLambda = ((1/this.staticVariable) * rightEquation4) + this.incidentLambda
-        this.scatteredLambda = scatteredLambda
-        this.photon2.a = getFrequency(scatteredLambda)
+        if (!isNaN(scatteredLambda)) {
+            this.scatteredLambda = scatteredLambda
+            this.photon2.a = getFrequency(scatteredLambda)
+        }
     };
 };
 

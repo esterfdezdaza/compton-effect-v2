@@ -147,10 +147,29 @@ function draw() {
   console.log(prevTheme)
 
   //Update values of the input boxes
-  comptonEffect.scatteredLambda = parseFloat(powerReverse(scatteredLambdaInput.value()));
-  comptonEffect.incidentLambda =  parseFloat(powerReverse(incidentLambdaInput.value()));
-  comptonEffect.theta =  parseFloat(photonAngle.value());
-  comptonEffect.phi =  parseFloat(electronAngle.value());
+  let newScatteredLambda = parseFloat(powerReverse(scatteredLambdaInput.value()));
+  console.log("scattered lambda: " + newScatteredLambda)
+  if (!isNaN(newScatteredLambda)) {
+    comptonEffect.scatteredLambda = newScatteredLambda
+  }
+  let newIncidentLambda = parseFloat(powerReverse(incidentLambdaInput.value()));
+  if (!isNaN(newIncidentLambda)) {
+    comptonEffect.incidentLambda = newIncidentLambda
+  }
+  let newTheta = parseFloat(photonAngle.value());
+  if (!isNaN(newTheta)) {
+    comptonEffect.theta = newTheta
+  }
+  let newPhi = parseFloat(electronAngle.value());
+  if (!isNaN(newPhi)) {
+    comptonEffect.phi = newPhi
+  }
+
+  if (isNaN(newScatteredLambda) || isNaN(newIncidentLambda) || isNaN(newTheta) || isNaN(newPhi)) {
+    console.log(isNumber(newScatteredLambda))
+    console.log(newScatteredLambda)
+    return
+  }
 
   if (this.prevIncLambda != comptonEffect.incidentLambda) {
     console.log("inc lambda changed")
@@ -257,12 +276,16 @@ function changePowers(number){
  * @param {*} string string of numbers and power with 10
  * @returns 
  */
-function powerReverse(string){
-  let parts = string.split('*', 2);
-  let mantissa = parseFloat(parts[0]);
-  let exponent = parseFloat(parts[1].replace('10^',''));
-  let result = mantissa * Math.pow(10, exponent);
-  return result;
+function powerReverse(string) {
+  try {
+    let parts = string.split('*', 2);
+    let mantissa = parseFloat(parts[0]);
+    let exponent = parseFloat(parts[1].replace('10^',''));
+    let result = mantissa * Math.pow(10, exponent);
+    return result;
+  } catch {
+    return NaN;
+  }
 };
 
 /**
@@ -353,6 +376,10 @@ function colourElements(elementColour, particle1, particle2, compass){
   colour2.selected(particle2);
   comptonEffect.electronMoving.colour = color(particle2);
 };
+
+function isNumber(value) {
+  return !isNaN(value) && value === 'number';
+}
 
 // TODO***********
 function manageInputs(input, defaultValue){
