@@ -16,14 +16,11 @@ var prevIncLambda, prevScaLambda, prevTheta, prevPhi
  */
 function setup() {
   // Setup normal canvas
-  let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
+  createCanvas(windowWidth, windowHeight, WEBGL);
   camera = createEasyCam();
-  //canvas.id("mainCanvas");
-  //canvas = select("mainCanvas");
   
   // Setup compass canvas
   graphics = createGraphics(windowWidth, windowHeight, WEBGL)
-  //graphics.createEasyCam();
   graphics.position(200, 200)
   
   // Create initial instances
@@ -41,7 +38,6 @@ function setup() {
   title1 = createP("Incident Photon's Wavelength");
   title1.position(10, 0);
   incidentLambdaInput = createInput(changePowers(comptonEffect.incidentLambda), 'string');
-  //incidentLambdaInput = manageInputs(incidentLambdaInput, comptonEffect.incidentLambda )
   incidentLambdaInput.position(210, 15);
   incidentLambdaInput.size(100, 15);
 
@@ -98,9 +94,9 @@ function setup() {
 
   // Theme menu
   themeTitle = createP("Theme");
-  themeTitle.position(windowWidth - 50, 15);
+  themeTitle.position(windowWidth - 120, 15);
   theme = createSelect();
-  theme.position(windowWidth, 30);
+  theme.position(windowWidth - 70, 30);
   setupThemeSelector(theme);
   theme.selected("original");
 };
@@ -109,36 +105,36 @@ function setup() {
  * Draw particles, compass and color in the canvas
  */
 function draw() {
-
+  // Compass movement
   graphics.reset()
   let rotations = camera.getRotation()
-  // console.log(rotations)
   graphics.rotateX(rotations[1]);
   graphics.rotateY(rotations[2]);
   graphics.rotateZ(rotations[3]);
 
-  // Compass
+  // Compass looking
   graphics.clear()
   graphics.lights();
   graphics.push();
   graphics.show()
   
-  // X-axis (red)
+  // X-axis
   graphics.stroke(xColour);
   graphics.strokeWeight(4);
   graphics.line(0, 0, 0, 30, 0, 0);
   
-  // Y-axis (green)
+  // Y-axis
   graphics.stroke(yColour);
   graphics.strokeWeight(4);
   graphics.line(0, 0, 0, 0, 30, 0);
 
-  // Z-axis (blue)
+  // Z-axis 
   graphics.stroke(zColour);
   graphics.strokeWeight(4);
   graphics.line(0, 0, 0, 0, 0, 30);
   graphics.pop();
 
+  //Functionality main canvas
   background(colourBackground);
   lights();
 
@@ -170,7 +166,6 @@ function draw() {
     console.log(newScatteredLambda)
     return
   }
-
   if (this.prevIncLambda != comptonEffect.incidentLambda) {
     console.log("inc lambda changed")
     // User has changed incident lambda
@@ -180,9 +175,7 @@ function draw() {
 
     photonAngle.value(comptonEffect.theta)
     electronAngle.value(comptonEffect.phi)
-  }
-
-  else if (this.prevScaLambda != comptonEffect.scatteredLambda) {
+  } else if (this.prevScaLambda != comptonEffect.scatteredLambda) {
     console.log("sca lambda changed")
     // User has changed scattered lambda
     comptonEffect.photon2.a = getFrequency(comptonEffect.scatteredLambda)
@@ -191,9 +184,7 @@ function draw() {
 
     photonAngle.value(comptonEffect.theta);
     electronAngle.value(comptonEffect.phi)
-  }
-
-  else if (this.prevTheta != comptonEffect.theta) {
+  } else if (this.prevTheta != comptonEffect.theta) {
     console.log("theta changed")
     // User has changed theta
     comptonEffect.calculate_scatteredLambda()
@@ -201,9 +192,7 @@ function draw() {
 
     scatteredLambdaInput.value(changePowers(comptonEffect.scatteredLambda))
     electronAngle.value(comptonEffect.phi)
-  }
-
-  else if (this.prevPhi != comptonEffect.phi) {
+  } else if (this.prevPhi != comptonEffect.phi) {
     // User has changed phi TODO***********
   }
 
@@ -257,7 +246,6 @@ function draw() {
 function radianToDegree(rad) {
   return rad * (180 / Math.PI);
 };
-
 
 /**
  * To show powers 
@@ -357,6 +345,7 @@ function colourElements(elementColour, particle1, particle2, compass){
   for (let i = 0; i < buttons.length; i++){
     buttons[i].style('color', color(elementColour));
   };
+  
   xColour = compass[0]
   yColour = compass[1]
   zColour = compass[2]
@@ -379,25 +368,6 @@ function colourElements(elementColour, particle1, particle2, compass){
 
 function isNumber(value) {
   return !isNaN(value) && value === 'number';
-}
-
-// TODO***********
-function manageInputs(input, defaultValue){
-  if (input == " " || input == 0){
-    console.log("here");
-    return defaultValue;
-  } else if(input == int){
-
-  }else{
-    return input
-  }
-
 };
-
-// TODO***********
-
-function mouseClicked() {
-  console.log('Mouse clicked at:', mouseX, mouseY);
-}
 
 
