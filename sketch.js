@@ -8,6 +8,7 @@ let title1, title2, title3, title4, b1, b2, b3, b4, photonParticle, electronPart
 
 let camera
 let font
+let compasAxisCheckbox
 
 // Use previous values to observe which input value changed most recenlty
 var prevIncLambda, prevScaLambda, prevTheta, prevPhi
@@ -25,8 +26,8 @@ function setup() {
   camera = createEasyCam();
   
   // Setup compass canvas
-  graphics = createGraphics(windowWidth, windowHeight, WEBGL)
-  graphics.position(200, 200)
+  graphics = createGraphics(100, 100, WEBGL)
+  graphics.position(windowWidth - 150, windowHeight - 150)
   
   // Create initial instances
   comptonEffect = new ComptonEffect();
@@ -104,54 +105,18 @@ function setup() {
   theme.position(windowWidth - 70, 30);
   setupThemeSelector(theme);
   theme.selected("original");
+
+  // Checkbox
+  compasAxisCheckbox = createCheckbox("Axis")
+  compasAxisCheckbox.position(windowWidth - 180, windowHeight - 100)
+
 };
 
 /**
  * Draw particles, compass and color in the canvas
  */
 function draw() {
-  // Compass movement
-  graphics.reset()
-  let rotations = camera.getRotation()
-  graphics.rotateX(rotations[1]);
-  graphics.rotateY(rotations[2]);
-  graphics.rotateZ(rotations[3]);
-
-  // Compass looking
-  graphics.clear()
-  graphics.lights();
-  graphics.push();
-  graphics.show()
-
-  // Text axis of the compass looking
-  graphics.textSize(15);
-  graphics.fill(0);
-  graphics.stroke(3);
-  graphics.textFont(font)
-  
-  // X-axis
-  graphics.stroke(xColour);
-  graphics.strokeWeight(4);
-  graphics.line(0, 0, 0, 30, 0, 0);
-  graphics.text("x", 32, 0)
-  
-  // Y-axis
-  graphics.stroke(yColour);
-  graphics.strokeWeight(4);
-  graphics.line(0, 0, 0, 0, 30, 0);
-  graphics.text("y", 2, 30)
-
-  // Z-axis 
-  graphics.stroke(zColour);
-  graphics.strokeWeight(4);
-  graphics.line(0, 0, 0, 0, 0, 30);
-
-  graphics.push()
-  graphics.translate(0, 2, 30)
-  graphics.text("z", 2, 0)
-  graphics.pop();
-
-  graphics.pop();
+  drawCompass(compasAxisCheckbox.checked())
 
   //Functionality main canvas
   background(colourBackground);
@@ -388,5 +353,52 @@ function colourElements(elementColour, particle1, particle2, compass){
 function isNumber(value) {
   return !isNaN(value) && value === 'number';
 };
+
+function drawCompass(drawAxisText) {
+  // Compass movement
+  graphics.reset()
+  let rotations = camera.getRotation()
+  graphics.rotateX(rotations[1]);
+  graphics.rotateY(rotations[2]);
+  graphics.rotateZ(rotations[3]);
+
+  // Compass looking
+  graphics.clear()
+  graphics.lights();
+  graphics.push();
+  graphics.show()
+
+  // X-axis
+  graphics.stroke(xColour);
+  graphics.strokeWeight(4);
+  graphics.line(0, 0, 0, 30, 0, 0);
+  
+  // Y-axis
+  graphics.stroke(yColour);
+  graphics.strokeWeight(4);
+  graphics.line(0, 0, 0, 0, 30, 0);
+
+  // Z-axis 
+  graphics.stroke(zColour);
+  graphics.strokeWeight(4);
+  graphics.line(0, 0, 0, 0, 0, 30);
+
+  graphics.pop();
+
+  // Text axis of the compass looking
+  if (drawAxisText) {
+    graphics.textSize(15);
+    graphics.fill(0);
+    graphics.stroke(3);
+    graphics.textFont(font)
+    
+    graphics.text("x", 32, 0)
+    graphics.text("y", 2, 30)
+    graphics.push()
+    graphics.translate(0, 2, 30)
+    graphics.text("z", 2, 0)
+    graphics.pop();
+  }
+}
 
 
