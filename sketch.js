@@ -7,9 +7,14 @@ let colour1, colour2, colourText, theme, colourBackground, prevTheme, xColour, y
 let title1, title2, title3, title4, b1, b2, b3, b4, photonParticle, electronParticle, themeTitle
 
 let camera
+let font
 
 // Use previous values to observe which input value changed most recenlty
 var prevIncLambda, prevScaLambda, prevTheta, prevPhi
+
+function preload() {
+  font = loadFont("Montserrat-Regular.ttf")
+}
 
 /**
  * Set up of the canvas and its elements
@@ -117,21 +122,35 @@ function draw() {
   graphics.lights();
   graphics.push();
   graphics.show()
+
+  // Text axis of the compass looking
+  graphics.textSize(15);
+  graphics.fill(0);
+  graphics.stroke(3);
+  graphics.textFont(font)
   
   // X-axis
   graphics.stroke(xColour);
   graphics.strokeWeight(4);
   graphics.line(0, 0, 0, 30, 0, 0);
+  graphics.text("x", 32, 0)
   
   // Y-axis
   graphics.stroke(yColour);
   graphics.strokeWeight(4);
   graphics.line(0, 0, 0, 0, 30, 0);
+  graphics.text("y", 2, 30)
 
   // Z-axis 
   graphics.stroke(zColour);
   graphics.strokeWeight(4);
   graphics.line(0, 0, 0, 0, 0, 30);
+
+  graphics.push()
+  graphics.translate(0, 2, 30)
+  graphics.text("z", 2, 0)
+  graphics.pop();
+
   graphics.pop();
 
   //Functionality main canvas
