@@ -33,7 +33,7 @@ function setup() {
   comptonEffect = new ComptonEffect();
   waveParticle1 = comptonEffect.photon1
   waveParticle2 = comptonEffect.photon2
-  colourText = 255
+  colourText = 0
   colourBackground = 255
   prevTheme = "original"
   xColour = "magenta"
@@ -117,7 +117,6 @@ function setup() {
  */
 function draw() {
   drawCompass(compasAxisCheckbox.checked())
-
   //Functionality main canvas
   background(colourBackground);
   lights();
@@ -321,6 +320,9 @@ function themeSetUp(theme, prevTheme){
 };
 
 function colourElements(elementColour, particle1, particle2, compass){
+  // Text color
+  colourText = elementColour
+  
   let titles = [title1, title2, title3, title4];
   for (let i = 0; i < titles.length; i++){
     titles[i].style('color', color(elementColour));
@@ -329,19 +331,24 @@ function colourElements(elementColour, particle1, particle2, compass){
   for (let i = 0; i < buttons.length; i++){
     buttons[i].style('color', color(elementColour));
   };
-  
-  xColour = compass[0]
-  yColour = compass[1]
-  zColour = compass[2]
 
+  compasAxisCheckbox.style('color', color(elementColour));
   themeTitle.style('color', color(elementColour));
   photonParticle.style('color', color(elementColour));
   electronParticle.style('color', color(elementColour));
 
+  
+  // Compass color
+  xColour = compass[0]
+  yColour = compass[1]
+  zColour = compass[2]
+
+  // Arrows' color
   comptonEffect.photon1.colourArrow = elementColour;
   comptonEffect.photon2.colourArrow = elementColour;
   comptonEffect.electronMoving.colourArrow = elementColour;
 
+  // Particle's color
   colour1.selected(particle1);
   comptonEffect.photon1.colour = color(particle1);
   colour1.selected(particle1);
@@ -388,7 +395,7 @@ function drawCompass(drawAxisText) {
   // Text axis of the compass looking
   if (drawAxisText) {
     graphics.textSize(15);
-    graphics.fill(0);
+    graphics.fill(colourText);
     graphics.stroke(3);
     graphics.textFont(font)
     
