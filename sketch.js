@@ -100,9 +100,9 @@ function setup() {
 
   // Theme menu
   themeTitle = createP("Theme");
-  themeTitle.position(windowWidth - 120, 15);
+  themeTitle.position(windowWidth - 160, 15);
   theme = createSelect();
-  theme.position(windowWidth - 70, 30);
+  theme.position(windowWidth - 110, 30);
   setupThemeSelector(theme);
   theme.selected("original");
 
