@@ -1,9 +1,8 @@
 // Initial variables
 let incidentLambdaInput, scatteredLambdaInput, photonAngle, electronAngle
 let comptonEffect
-let compass
 let waveParticle1, waveParticle2
-let colour1, colour2, colourText, theme, colourBackground, prevTheme, xColour, yColour, zColour
+let colour1, colour2, colourText, theme, colourBackground, prevTheme
 let title1, title2, title3, title4, b1, b2, b3, b4, photonParticle, electronParticle, themeTitle
 
 let camera
@@ -25,10 +24,6 @@ function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
   camera = createEasyCam();
   
-  // Setup compass canvas
-  graphics = createGraphics(100, 100, WEBGL)
-  graphics.position(windowWidth - 150, windowHeight - 150)
-  
   // Create initial instances
   comptonEffect = new ComptonEffect();
   waveParticle1 = comptonEffect.photon1
@@ -36,9 +31,7 @@ function setup() {
   colourText = 0
   colourBackground = 255
   prevTheme = "original"
-  xColour = "magenta"
-  yColour = "green"
-  zColour = "blue"
+
 
   // Input boxes
   title1 = createP("Incident Photon's Wavelength");
@@ -116,10 +109,12 @@ function setup() {
  * Draw particles, compass and color in the canvas
  */
 function draw() {
-  drawCompass(compasAxisCheckbox.checked())
   //Functionality main canvas
   background(colourBackground);
   lights();
+
+  // Drawing compass
+  createCompass(compasAxisCheckbox.checked())
 
   //Defining theme and colors
   prevTheme = themeSetUp(theme.selected(), prevTheme)
@@ -337,12 +332,6 @@ function colourElements(elementColour, particle1, particle2, compass){
   photonParticle.style('color', color(elementColour));
   electronParticle.style('color', color(elementColour));
 
-  
-  // Compass color
-  xColour = compass[0]
-  yColour = compass[1]
-  zColour = compass[2]
-
   // Arrows' color
   comptonEffect.photon1.colourArrow = elementColour;
   comptonEffect.photon2.colourArrow = elementColour;
@@ -361,50 +350,19 @@ function isNumber(value) {
   return !isNaN(value) && value === 'number';
 };
 
-function drawCompass(drawAxisText) {
-  // Compass movement
-  graphics.reset()
-  let rotations = camera.getRotation()
-  graphics.rotateX(rotations[1]);
-  graphics.rotateY(rotations[2]);
-  graphics.rotateZ(rotations[3]);
+function createCompass(drawAxisText){
+  stroke(colourText);
+  strokeWeight(5);
+  line(0, 90, 0, -90);
+  line(10, 90, -10, 90);
+  line(10, -90, -10, -90)
 
-  // Compass looking
-  graphics.clear()
-  graphics.lights();
-  graphics.push();
-  graphics.show()
-
-  // X-axis
-  graphics.stroke(xColour);
-  graphics.strokeWeight(4);
-  graphics.line(0, 0, 0, 30, 0, 0);
-  
-  // Y-axis
-  graphics.stroke(yColour);
-  graphics.strokeWeight(4);
-  graphics.line(0, 0, 0, 0, 30, 0);
-
-  // Z-axis 
-  graphics.stroke(zColour);
-  graphics.strokeWeight(4);
-  graphics.line(0, 0, 0, 0, 0, 30);
-
-  graphics.pop();
-
-  // Text axis of the compass looking
-  if (drawAxisText) {
-    graphics.textSize(15);
-    graphics.fill(colourText);
-    graphics.stroke(3);
-    graphics.textFont(font)
-    
-    graphics.text("x", 32, 0)
-    graphics.text("y", 2, 30)
-    graphics.push()
-    graphics.translate(0, 2, 30)
-    graphics.text("z", 2, 0)
-    graphics.pop();
+  if(drawAxisText){
+    textSize(10);
+    fill(colourText);
+    stroke(3);
+    textFont(font)
+    text("y", 14, 90)
   }
 }
 
