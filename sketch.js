@@ -237,8 +237,8 @@ function radianToDegree(rad) {
  */
 function changePowers(number){
   let exponent = Math.floor(Math.log10(Math.abs(number)));
-  let mantissa = number / Math.pow(10, exponent);
-  let expressionString = `${mantissa} * 10^ ${exponent}`;
+  let firstPat = number / Math.pow(10, exponent);
+  let expressionString = `${firstPat} * 10^ ${exponent}`;
   return expressionString;
 };
 
@@ -250,9 +250,9 @@ function changePowers(number){
 function powerReverse(string) {
   try {
     let parts = string.split('*', 2);
-    let mantissa = parseFloat(parts[0]);
+    let number = parseFloat(parts[0]);
     let exponent = parseFloat(parts[1].replace('10^',''));
-    let result = mantissa * Math.pow(10, exponent);
+    let result = number * Math.pow(10, exponent);
     return result;
   } catch {
     return NaN;
