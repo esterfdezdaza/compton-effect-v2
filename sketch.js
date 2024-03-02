@@ -3,7 +3,7 @@ let incidentLambdaInput, scatteredLambdaInput, photonAngle, electronAngle
 let comptonEffect
 let waveParticle1, waveParticle2
 let colour1, colour2, colourText, theme, colourBackground, prevTheme
-let title1, title2, title3, title4, b1, b2, b3, b4, photonParticle, electronParticle, themeTitle
+let title1, title2, title3, title4, b1, b2, b3, b4, photonParticle, electronParticle, themeTitle, animation1, animation2, animation3, animation2on, animation3on
 
 let camera
 let font
@@ -32,6 +32,7 @@ function setup() {
   colourBackground = 255
   prevTheme = "original"
 
+
   // Input boxes
   title1 = createP("Incident Photon's Wavelength");
   title1.position(10, 0);
@@ -58,6 +59,7 @@ function setup() {
   electronAngle.size(100, 15);
 
   // Units for the boxes
+
   b1 = createP(incidentLambdaInput.value() + ' * 10 ^ -12 m');
   b1.position(325, 0);
   b2 = createP(scatteredLambdaInput.value() + ' * 10 ^ -12 m');
@@ -192,16 +194,42 @@ function draw() {
     // Progress first photon
     waveParticle1.setHidden(false)
     waveParticle1.progress += 0.01
+
+    // Creating animation 1
+    if (waveParticle1.progress == 0.01){
+      if(animation2on){
+        animation2.remove()
+      };
+      animation1 = createP("Photon approximates to the outer layers of an atom");
+      animation1.position(windowWidth/2 - 150, 550);
+    }
+
   } else {
     if (waveParticle2.progress < 1) {
+      // Creating aniamation 3
+    if (waveParticle2.progress == 0){
+      animation1.remove()
+      animation3 = createP("BANG !");
+      animation3.position(windowWidth/2, 550);
+      animation3on = true
+    }
       // Make other trail disappear
       waveParticle1.progressTrail()
       waveParticle1.setHidden(true)
-      waveParticle1.progress = 
 
       // Progress second photon
       waveParticle2.setHidden(false)
       waveParticle2.progress += 0.01
+
+      // Creating animation 2
+      if (waveParticle2.progress == 0.09){
+        if(animation3on){
+          animation3.remove()
+        };
+        animation2 = createP("New photon with less energy and momentum");
+        animation2.position(windowWidth/2 - 150, 550);
+        animation2on = true
+      }
 
       // Move electron
       comptonEffect.electronMoving.progress += 0.01
