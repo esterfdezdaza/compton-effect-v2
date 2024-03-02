@@ -32,40 +32,39 @@ function setup() {
   colourBackground = 255
   prevTheme = "original"
 
-
   // Input boxes
   title1 = createP("Incident Photon's Wavelength");
   title1.position(10, 0);
-  incidentLambdaInput = createInput(changePowers(comptonEffect.incidentLambda), 'string');
+  incidentLambdaInput = createSlider(0, 9.99, 2, 0.01);
   incidentLambdaInput.position(210, 15);
   incidentLambdaInput.size(100, 15);
 
   title2 = createP("Scattered Photon's Wavelength");
   title2.position(10, 20);
-  scatteredLambdaInput = createInput(changePowers(comptonEffect.scatteredLambda), 'string');
+  scatteredLambdaInput = createSlider(0, 9.99, 3.41, 0.01);
   scatteredLambdaInput.position(210, 35);
   scatteredLambdaInput.size(100, 15);
 
   title3 = createP('Theta');
   title3.position(10, 40);
-  photonAngle = createInput(comptonEffect.theta, 'string');
+  photonAngle = createSlider(0, 9.99, comptonEffect.theta, 0.01);
   photonAngle.position(210, 55);
   photonAngle.size(100, 15);
 
   title4 = createP('Phi');
   title4.position(10, 60);
-  electronAngle = createInput(comptonEffect.phi, 'string');
+  electronAngle = createSlider(0, 9.99, comptonEffect.phi, 0.01);
   electronAngle.position(210, 75);
   electronAngle.size(100, 15);
 
   // Units for the boxes
-  b1 = createP('m');
+  b1 = createP(incidentLambdaInput.value() + ' * 10 ^ -12 m');
   b1.position(325, 0);
-  b2 = createP('m');
+  b2 = createP(scatteredLambdaInput.value() + ' * 10 ^ -12 m');
   b2.position(325, 20 );
-  b3 = createP('Rad');
+  b3 = createP(photonAngle.value() + ' Rad');
   b3.position(325, 40);
-  b4 = createP('Rad');
+  b4 = createP(electronAngle.value() + ' Rad');
   b4.position(325, 60);
 
   // Reference Box
@@ -75,8 +74,8 @@ function setup() {
   electronParticle.position(10, windowHeight - 80);
 
   // initialise previous values
-  this.prevIncLambda = parseFloat(powerReverse(incidentLambdaInput.value()));
-  this.prevScaLambda = parseFloat(powerReverse(scatteredLambdaInput.value()));
+  this.prevIncLambda = parseFloat((incidentLambdaInput.value()) * Math.pow(10, -12));
+  this.prevScaLambda = parseFloat((scatteredLambdaInput.value()) * Math.pow(10, -12));
   this.prevTheta = parseFloat(photonAngle.value());
   this.prevPhi = parseFloat(electronAngle.value());
 
@@ -102,7 +101,6 @@ function setup() {
   // Checkbox
   compasAxisCheckbox = createCheckbox("Axis")
   compasAxisCheckbox.position(windowWidth - 180, windowHeight - 100)
-
 };
 
 /**
@@ -113,20 +111,19 @@ function draw() {
   background(colourBackground);
   lights();
 
-  // Drawing compass
-  createCompass(compasAxisCheckbox.checked())
-
   //Defining theme and colors
   prevTheme = themeSetUp(theme.selected(), prevTheme)
   console.log(prevTheme)
+  // Drawing compass
+  createCompass(compasAxisCheckbox.checked())
 
-  //Update values of the input boxes
-  let newScatteredLambda = parseFloat(powerReverse(scatteredLambdaInput.value()));
+  //Update values of the input boxes plus handling error
+  let newScatteredLambda = (scatteredLambdaInput.value()) * Math.pow(10, -12);
   console.log("scattered lambda: " + newScatteredLambda)
   if (!isNaN(newScatteredLambda)) {
     comptonEffect.scatteredLambda = newScatteredLambda
   }
-  let newIncidentLambda = parseFloat(powerReverse(incidentLambdaInput.value()));
+  let newIncidentLambda = (incidentLambdaInput.value()) * Math.pow(10, -12);
   if (!isNaN(newIncidentLambda)) {
     comptonEffect.incidentLambda = newIncidentLambda
   }
@@ -166,12 +163,21 @@ function draw() {
     console.log("theta changed")
     // User has changed theta
     comptonEffect.calculate_scatteredLambda()
+    comptonEffect.photon2.a = getFrequency(comptonEffect.scatteredLambda)
     comptonEffect.calculate_phi()
 
-    scatteredLambdaInput.value(changePowers(comptonEffect.scatteredLambda))
+    scatteredLambdaInput.value(to(comptonEffect.scatteredLambda))
     electronAngle.value(comptonEffect.phi)
   } else if (this.prevPhi != comptonEffect.phi) {
-    // User has changed phi TODO***********
+    // User has changed phi 
+    comptonEffect.calculate_theta_phi()
+    comptonEffect.calculate_scatteredLambda()
+    comptonEffect.photon2.a = getFrequency(comptonEffect.scatteredLambda)
+
+
+    photonAngle.value(comptonEffect.theta);
+    scatteredLambdaInput.value(to(comptonEffect.scatteredLambda))
+
   }
 
   comptonEffect.draw();
@@ -210,8 +216,8 @@ function draw() {
   comptonEffect.electronMoving.setProgress();
 
   // Save previous values
-  this.prevIncLambda = parseFloat(powerReverse(incidentLambdaInput.value()));
-  this.prevScaLambda = parseFloat(powerReverse(scatteredLambdaInput.value()));
+  this.prevIncLambda = parseFloat(powertoLetter(incidentLambdaInput.value()));
+  this.prevScaLambda = parseFloat(powertoLetter(scatteredLambdaInput.value()));
   this.prevTheta = parseFloat(photonAngle.value());
   this.prevPhi = parseFloat(electronAngle.value());
 };
@@ -230,7 +236,7 @@ function radianToDegree(rad) {
  * @param {*} number numbers and power with e
  * @returns 
  */
-function changePowers(number){
+function powertoDecimal(number){
   let exponent = Math.floor(Math.log10(Math.abs(number)));
   let firstPat = number / Math.pow(10, exponent);
   let expressionString = `${firstPat} * 10^ ${exponent}`;
@@ -242,7 +248,7 @@ function changePowers(number){
  * @param {*} string string of numbers and power with 10
  * @returns 
  */
-function powerReverse(string) {
+function powertoLetter(string) {
   try {
     let parts = string.split('*', 2);
     let number = parseFloat(parts[0]);
@@ -364,6 +370,6 @@ function createCompass(drawAxisText){
     textFont(font)
     text("y", 14, 90)
   }
-}
+};
 
 

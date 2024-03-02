@@ -77,6 +77,15 @@ class ComptonEffect {
             this.photon2.a = getFrequency(scatteredLambda)
         }
     };
+
+    calculate_theta_phi(){
+        //theta = 2 * arcot(arcot(phi)/(1 + h/(me*c*lambda)))
+        let theta = 2 * Math.atan(Math.atan(this.phi) / (1 + (this.h / (this.me * this.c * this.incidentLambda))))
+        if (!isNaN(theta)) {
+            this.theta = theta.toPrecision(5)
+        }
+        console.log("Calculated theta: " + theta + ", in degrees: " + radianToDegree(theta))
+    };
 };
 
 /**
