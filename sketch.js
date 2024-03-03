@@ -3,7 +3,8 @@ let incidentLambdaInput, scatteredLambdaInput, photonAngle, electronAngle
 let comptonEffect
 let waveParticle1, waveParticle2
 let colour1, colour2, colourText, theme, colourBackground, prevTheme
-let title1, title2, title3, title4, b1, b2, b3, b4, photonParticle, electronParticle, themeTitle, animation1, animation2, animation3, animation2on, animation3on
+let title1, title2, title3, title4, b1, b2, b3, b4, photonParticle, electronParticle, themeTitle
+let caption // The text right below the visualisation providing some more detail about what is visible
 
 let camera
 let font
@@ -36,19 +37,19 @@ function setup() {
   // Input boxes
   title1 = createP("Incident Photon's Wavelength");
   title1.position(10, 0);
-  incidentLambdaInput = createSlider(0, 9.99, 2, 0.01);
+  incidentLambdaInput = createSlider(0.01, 9.99, 2, 0.01);
   incidentLambdaInput.position(210, 15);
   incidentLambdaInput.size(100, 15);
 
   title2 = createP("Scattered Photon's Wavelength");
   title2.position(10, 20);
-  scatteredLambdaInput = createSlider(0, 9.99, 3.41, 0.01);
+  scatteredLambdaInput = createSlider(0.01, 9.99, 3.41, 0.01);
   scatteredLambdaInput.position(210, 35);
   scatteredLambdaInput.size(100, 15);
 
   title3 = createP('Theta');
   title3.position(10, 40);
-  photonAngle = createSlider(0, 9.99, comptonEffect.theta, 0.01);
+  photonAngle = createSlider(0.001, 9.99, comptonEffect.theta, 0.01);
   photonAngle.position(210, 55);
   photonAngle.size(100, 15);
 
@@ -103,6 +104,10 @@ function setup() {
   // Checkbox
   compasAxisCheckbox = createCheckbox("Axis")
   compasAxisCheckbox.position(windowWidth - 180, windowHeight - 100)
+
+  // Set up caption
+  caption = createP("Photon approximates to the outer layers of an atom");
+  caption.position(windowWidth/2 - 150, 550);
 };
 
 /**
@@ -120,12 +125,12 @@ function draw() {
   createCompass(compasAxisCheckbox.checked())
 
   //Update values of the input boxes plus handling error
-  let newScatteredLambda = (scatteredLambdaInput.value()) * Math.pow(10, -12);
+  let newScatteredLambda = scatteredLambdaInput.value() * Math.pow(10, -12);
   console.log("scattered lambda: " + newScatteredLambda)
   if (!isNaN(newScatteredLambda)) {
     comptonEffect.scatteredLambda = newScatteredLambda
   }
-  let newIncidentLambda = (incidentLambdaInput.value()) * Math.pow(10, -12);
+  let newIncidentLambda = incidentLambdaInput.value() * Math.pow(10, -12);
   if (!isNaN(newIncidentLambda)) {
     comptonEffect.incidentLambda = newIncidentLambda
   }
@@ -145,6 +150,7 @@ function draw() {
   }
   if (this.prevIncLambda != comptonEffect.incidentLambda) {
     console.log("inc lambda changed")
+    console.log(`prev: ${this.prevIncLambda} \n new: ${comptonEffect.incidentLambda}`)
     // User has changed incident lambda
     comptonEffect.photon1.a = getFrequency(comptonEffect.incidentLambda)
     comptonEffect.calculate_theta()
@@ -168,7 +174,7 @@ function draw() {
     comptonEffect.photon2.a = getFrequency(comptonEffect.scatteredLambda)
     comptonEffect.calculate_phi()
 
-    scatteredLambdaInput.value(to(comptonEffect.scatteredLambda))
+    scatteredLambdaInput.value(comptonEffect.scatteredLambda)
     electronAngle.value(comptonEffect.phi)
   } else if (this.prevPhi != comptonEffect.phi) {
     // User has changed phi 
@@ -178,9 +184,15 @@ function draw() {
 
 
     photonAngle.value(comptonEffect.theta);
-    scatteredLambdaInput.value(to(comptonEffect.scatteredLambda))
+    scatteredLambdaInput.value(comptonEffect.scatteredLambda)
 
   }
+
+  // Update text next to the sliders
+  b1.html(powertoDecimal(comptonEffect.incidentLambda) + " m")
+  b2.html(powertoDecimal(comptonEffect.scatteredLambda) + " m")
+  b3.html(comptonEffect.theta + " Rad")
+  b4.html(comptonEffect.phi + " Rad")
 
   comptonEffect.draw();
 
@@ -195,24 +207,19 @@ function draw() {
     waveParticle1.setHidden(false)
     waveParticle1.progress += 0.01
 
-    // Creating animation 1
-    if (waveParticle1.progress == 0.01){
-      if(animation2on){
-        animation2.remove()
-      };
-      animation1 = createP("Photon approximates to the outer layers of an atom");
-      animation1.position(windowWidth/2 - 150, 550);
+    // Change caption
+    if (waveParticle1.progress == 0.01) {
+      caption.html("Photon approximates to the outer layers of an atom");
+      caption.position(windowWidth/2 - 150, 550);
     }
 
   } else {
     if (waveParticle2.progress < 1) {
-      // Creating aniamation 3
-    if (waveParticle2.progress == 0){
-      animation1.remove()
-      animation3 = createP("BANG !");
-      animation3.position(windowWidth/2, 550);
-      animation3on = true
-    }
+      // Change caption
+      if (waveParticle2.progress == 0) {
+        caption.html("BANG !");
+        caption.position(windowWidth/2, 550);
+      }
       // Make other trail disappear
       waveParticle1.progressTrail()
       waveParticle1.setHidden(true)
@@ -221,14 +228,10 @@ function draw() {
       waveParticle2.setHidden(false)
       waveParticle2.progress += 0.01
 
-      // Creating animation 2
-      if (waveParticle2.progress == 0.09){
-        if(animation3on){
-          animation3.remove()
-        };
-        animation2 = createP("New photon with less energy and momentum");
-        animation2.position(windowWidth/2 - 150, 550);
-        animation2on = true
+      // Change caption
+      if (waveParticle2.progress > 0.15) {
+        caption.html("New photon with less energy and momentum");
+        caption.position(windowWidth/2 - 150, 550);
       }
 
       // Move electron
@@ -244,8 +247,8 @@ function draw() {
   comptonEffect.electronMoving.setProgress();
 
   // Save previous values
-  this.prevIncLambda = parseFloat(powertoLetter(incidentLambdaInput.value()));
-  this.prevScaLambda = parseFloat(powertoLetter(scatteredLambdaInput.value()));
+  this.prevIncLambda = powertoLetter(powertoDecimal(incidentLambdaInput.value() * Math.pow(10, -12)));
+  this.prevScaLambda = powertoLetter(powertoDecimal(scatteredLambdaInput.value() * Math.pow(10, -12)));
   this.prevTheta = parseFloat(photonAngle.value());
   this.prevPhi = parseFloat(electronAngle.value());
 };
