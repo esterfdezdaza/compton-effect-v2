@@ -1,7 +1,7 @@
 class ComptonEffect {
     constructor() {
-        this.photon1 = new  Waveparticle(-100, 0, 0, 0, 0, 0, 10, 30, 0);
-        this.photon2 = new Waveparticle(0, 0, 0, 50, -100, 0, 10, 30, 0);
+        this.photon1 = new  Waveparticle(-100, 0, 0, 0, 0, 0, 10, 30, 0)
+        this.photon2 = new Waveparticle(0, 0, 0, 50, -100, 0, 10, 30, 0)
         this.electronMoving = new LinearMovementParticle(0, 0, 0, 50, 100, 0)
         this.scatteredLambda = 3.41 * Math.pow(10, -12)
         this.incidentLambda = 2 * Math.pow(10, -12)
@@ -11,7 +11,7 @@ class ComptonEffect {
         this.me = 9.11 * Math.pow(10, -31)  // Electron's mass
         this.c = 3 * Math.pow(10, 8)        // Light speed
         this.staticVariable = (this.me*this.c)/this.h
-    };
+    }
 
     /**
      * Shows the particles
@@ -25,7 +25,7 @@ class ComptonEffect {
         this.photon1.show()
         this.photon2.show()
         this.electronMoving.show()
-    };
+    }
 
     /**
      * Calculates Compton's Effect formula for the angle of the scattered photon
@@ -38,7 +38,7 @@ class ComptonEffect {
         }
 
         console.log("Calculated theta: " + theta + " (rad), " + radianToDegree(theta) + " (deg)")
-    };
+    }
 
     /**
      * Calculates then angle phi
@@ -51,7 +51,7 @@ class ComptonEffect {
             this.phi = phi.toPrecision(5)
         }
         console.log("Calculated phi: " + phi + ", in degrees: " + radianToDegree(phi))
-    };
+    }
     
     /**
      * Calculates Compton's Effect formula for the Incident Lambda
@@ -63,7 +63,7 @@ class ComptonEffect {
         if (!isNaN(incidentLambda)) {
             this.incidentLambda = incidentLambda
         }
-    };
+    }
     
     /**
      * Calculates Compton's Effect formula for the Scattered Lambda
@@ -76,7 +76,7 @@ class ComptonEffect {
             this.scatteredLambda = scatteredLambda
             this.photon2.a = getFrequency(scatteredLambda)
         }
-    };
+    }
 
     calculate_theta_phi(){
         //theta = 2 * arcot(arcot(phi)/(1 + h/(me*c*lambda)))
@@ -85,12 +85,12 @@ class ComptonEffect {
             this.theta = theta.toPrecision(5)
         }
         console.log("Calculated theta: " + theta + ", in degrees: " + radianToDegree(theta))
-    };
-};
+    }
+}
 
 /**
  * Returns a number for the particle's speed
  */
 function getFrequency(nmValue) {
-    return floor(20 / (nmValue * Math.pow(10, 12)));
+    return floor(20 / (nmValue * Math.pow(10, 12)))
 };

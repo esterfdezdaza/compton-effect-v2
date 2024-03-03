@@ -22,11 +22,11 @@ function preload() {
  */
 function setup() {
   // Setup normal canvas
-  createCanvas(windowWidth, windowHeight, WEBGL);
-  camera = createEasyCam();
+  createCanvas(windowWidth, windowHeight, WEBGL)
+  camera = createEasyCam()
   
   // Create initial instances
-  comptonEffect = new ComptonEffect();
+  comptonEffect = new ComptonEffect()
   waveParticle1 = comptonEffect.photon1
   waveParticle2 = comptonEffect.photon2
   colourText = 0
@@ -35,88 +35,96 @@ function setup() {
 
 
   // Input boxes
-  title1 = createP("Incident Photon's Wavelength");
-  title1.position(10, 0);
-  incidentLambdaInput = createSlider(0.01, 9.99, 2, 0.01);
-  incidentLambdaInput.position(210, 15);
-  incidentLambdaInput.size(100, 15);
+  title1 = createP("Incident Photon's Wavelength")
+  title1.position(10, 0)
+  incidentLambdaInput = createSlider(0.01, 9.99, 2, 0.01)
+  incidentLambdaInput.position(210, 15)
+  incidentLambdaInput.size(100, 15)
 
-  title2 = createP("Scattered Photon's Wavelength");
-  title2.position(10, 20);
-  scatteredLambdaInput = createSlider(0.01, 9.99, 3.41, 0.01);
-  scatteredLambdaInput.position(210, 35);
-  scatteredLambdaInput.size(100, 15);
+  title2 = createP("Scattered Photon's Wavelength")
+  title2.position(10, 20)
+  scatteredLambdaInput = createSlider(0.01, 9.99, 3.41, 0.01)
+  scatteredLambdaInput.position(210, 35)
+  scatteredLambdaInput.size(100, 15)
 
-  title3 = createP('Theta');
-  title3.position(10, 40);
-  photonAngle = createSlider(0.001, 9.99, comptonEffect.theta, 0.01);
-  photonAngle.position(210, 55);
-  photonAngle.size(100, 15);
+  title3 = createP('Theta')
+  title3.position(10, 40)
+  photonAngle = createSlider(0.001, 9.99, comptonEffect.theta, 0.01)
+  photonAngle.position(210, 55)
+  photonAngle.size(100, 15)
 
-  title4 = createP('Phi');
-  title4.position(10, 60);
-  electronAngle = createSlider(0, 9.99, comptonEffect.phi, 0.01);
-  electronAngle.position(210, 75);
-  electronAngle.size(100, 15);
+  title4 = createP('Phi')
+  title4.position(10, 60)
+  electronAngle = createSlider(0, 9.99, comptonEffect.phi, 0.01)
+  electronAngle.position(210, 75)
+  electronAngle.size(100, 15)
 
   // Units for the boxes
 
-  b1 = createP(incidentLambdaInput.value() + ' * 10 ^ -12 m');
-  b1.position(325, 0);
-  b2 = createP(scatteredLambdaInput.value() + ' * 10 ^ -12 m');
-  b2.position(325, 20 );
-  b3 = createP(photonAngle.value() + ' Rad');
-  b3.position(325, 40);
-  b4 = createP(electronAngle.value() + ' Rad');
-  b4.position(325, 60);
+  b1 = createP(incidentLambdaInput.value() + ' * 10 ^ -12 m')
+  b1.position(325, 0)
+  b2 = createP(scatteredLambdaInput.value() + ' * 10 ^ -12 m')
+  b2.position(325, 20 )
+  b3 = createP(photonAngle.value() + ' Rad')
+  b3.position(325, 40)
+  b4 = createP(electronAngle.value() + ' Rad')
+  b4.position(325, 60)
 
   // Reference Box
-  photonParticle = createP('Photon');
-  photonParticle.position(10, windowHeight - 120);
-  electronParticle = createP('Electron');
-  electronParticle.position(10, windowHeight - 80);
+  photonParticle = createP('Photon')
+  photonParticle.position(10, windowHeight - 120)
+  electronParticle = createP('Electron')
+  electronParticle.position(10, windowHeight - 80)
 
   // initialise previous values
-  this.prevIncLambda = parseFloat((incidentLambdaInput.value()) * Math.pow(10, -12));
-  this.prevScaLambda = parseFloat((scatteredLambdaInput.value()) * Math.pow(10, -12));
-  this.prevTheta = parseFloat(photonAngle.value());
-  this.prevPhi = parseFloat(electronAngle.value());
+  this.prevIncLambda = parseFloat((incidentLambdaInput.value()) * Math.pow(10, -12))
+  this.prevScaLambda = parseFloat((scatteredLambdaInput.value()) * Math.pow(10, -12))
+  this.prevTheta = parseFloat(photonAngle.value())
+  this.prevPhi = parseFloat(electronAngle.value())
 
   // Particle's color menu
-  colour1 = createSelect();
-  colour1.position(70, windowHeight - 105);
-  setupColourSelector(colour1);
-  colour1.selected("yellow");
+  colour1 = createSelect()
+  colour1.position(70, windowHeight - 105)
+  setupColourSelector(colour1)
+  colour1.selected("yellow")
 
-  colour2 = createSelect();
-  colour2.position(70, windowHeight - 65);
-  setupColourSelector(colour2);
-  colour2.selected("blue");
+  colour2 = createSelect()
+  colour2.position(70, windowHeight - 65)
+  setupColourSelector(colour2)
+  colour2.selected("blue")
 
   // Theme menu
-  themeTitle = createP("Theme");
-  themeTitle.position(windowWidth - 160, 15);
-  theme = createSelect();
-  theme.position(windowWidth - 110, 30);
-  setupThemeSelector(theme);
-  theme.selected("original");
+  themeTitle = createP("Theme")
+  themeTitle.position(windowWidth - 200, 15)
+  theme = createSelect()
+  theme.position(windowWidth - 150, 30)
+  setupThemeSelector(theme)
+  theme.selected("original")
 
   // Checkbox
   compasAxisCheckbox = createCheckbox("Axis")
   compasAxisCheckbox.position(windowWidth - 180, windowHeight - 100)
 
   // Set up caption
-  caption = createP("Photon approximates to the outer layers of an atom");
-  caption.position(windowWidth/2 - 150, 550);
-};
+  caption = createP("Photon approximates to the outer layers of an atom")
+  caption.position(windowWidth/2 - 150, 550)
+
+  // Button
+  let refreshButton = createButton("↻")
+  refreshButton.position(windowWidth - 70, 27)
+  refreshButton.mousePressed(() => {
+    console.log("Refresh Button Clicked")
+    location.reload(true)
+  })
+}
 
 /**
  * Draw particles, compass and color in the canvas
  */
 function draw() {
   //Functionality main canvas
-  background(colourBackground);
-  lights();
+  background(colourBackground)
+  lights()
 
   //Defining theme and colors
   prevTheme = themeSetUp(theme.selected(), prevTheme)
@@ -125,20 +133,20 @@ function draw() {
   createCompass(compasAxisCheckbox.checked())
 
   //Update values of the input boxes plus handling error
-  let newScatteredLambda = scatteredLambdaInput.value() * Math.pow(10, -12);
+  let newScatteredLambda = scatteredLambdaInput.value() * Math.pow(10, -12)
   console.log("scattered lambda: " + newScatteredLambda)
   if (!isNaN(newScatteredLambda)) {
     comptonEffect.scatteredLambda = newScatteredLambda
   }
-  let newIncidentLambda = incidentLambdaInput.value() * Math.pow(10, -12);
+  let newIncidentLambda = incidentLambdaInput.value() * Math.pow(10, -12)
   if (!isNaN(newIncidentLambda)) {
     comptonEffect.incidentLambda = newIncidentLambda
   }
-  let newTheta = parseFloat(photonAngle.value());
+  let newTheta = parseFloat(photonAngle.value())
   if (!isNaN(newTheta)) {
     comptonEffect.theta = newTheta
   }
-  let newPhi = parseFloat(electronAngle.value());
+  let newPhi = parseFloat(electronAngle.value())
   if (!isNaN(newPhi)) {
     comptonEffect.phi = newPhi
   }
@@ -165,7 +173,7 @@ function draw() {
     comptonEffect.calculate_theta()
     comptonEffect.calculate_phi()
 
-    photonAngle.value(comptonEffect.theta);
+    photonAngle.value(comptonEffect.theta)
     electronAngle.value(comptonEffect.phi)
   } else if (this.prevTheta != comptonEffect.theta) {
     console.log("theta changed")
@@ -183,7 +191,7 @@ function draw() {
     comptonEffect.photon2.a = getFrequency(comptonEffect.scatteredLambda)
 
 
-    photonAngle.value(comptonEffect.theta);
+    photonAngle.value(comptonEffect.theta)
     scatteredLambdaInput.value(comptonEffect.scatteredLambda)
 
   }
@@ -194,7 +202,7 @@ function draw() {
   b3.html(comptonEffect.theta + " Rad")
   b4.html(comptonEffect.phi + " Rad")
 
-  comptonEffect.draw();
+  comptonEffect.draw()
 
   // Movement of the Particle
   if (waveParticle1.progress < 1) {
@@ -209,16 +217,16 @@ function draw() {
 
     // Change caption
     if (waveParticle1.progress == 0.01) {
-      caption.html("Photon approximates to the outer layers of an atom");
-      caption.position(windowWidth/2 - 150, 550);
+      caption.html("Photon approximates to the outer layers of an atom")
+      caption.position(windowWidth/2 - 150, 550)
     }
 
   } else {
     if (waveParticle2.progress < 1) {
       // Change caption
       if (waveParticle2.progress == 0) {
-        caption.html("BANG !");
-        caption.position(windowWidth/2, 550);
+        caption.html("BANG !")
+        caption.position(windowWidth/2, 550)
       }
       // Make other trail disappear
       waveParticle1.progressTrail()
@@ -230,8 +238,8 @@ function draw() {
 
       // Change caption
       if (waveParticle2.progress > 0.15) {
-        caption.html("New photon with less energy and momentum");
-        caption.position(windowWidth/2 - 150, 550);
+        caption.html("New photon with less energy and momentum")
+        caption.position(windowWidth/2 - 150, 550)
       }
 
       // Move electron
@@ -242,16 +250,16 @@ function draw() {
     }
   }
   
-  waveParticle1.setProgress();
-  waveParticle2.setProgress();
-  comptonEffect.electronMoving.setProgress();
+  waveParticle1.setProgress()
+  waveParticle2.setProgress()
+  comptonEffect.electronMoving.setProgress()
 
   // Save previous values
-  this.prevIncLambda = powertoLetter(powertoDecimal(incidentLambdaInput.value() * Math.pow(10, -12)));
-  this.prevScaLambda = powertoLetter(powertoDecimal(scatteredLambdaInput.value() * Math.pow(10, -12)));
-  this.prevTheta = parseFloat(photonAngle.value());
-  this.prevPhi = parseFloat(electronAngle.value());
-};
+  this.prevIncLambda = powertoLetter(powertoDecimal(incidentLambdaInput.value() * Math.pow(10, -12)))
+  this.prevScaLambda = powertoLetter(powertoDecimal(scatteredLambdaInput.value() * Math.pow(10, -12)))
+  this.prevTheta = parseFloat(photonAngle.value())
+  this.prevPhi = parseFloat(electronAngle.value())
+}
 
 /**
  * To change from radians to degrees
@@ -259,8 +267,8 @@ function draw() {
  * @returns 
  */
 function radianToDegree(rad) {
-  return rad * (180 / Math.PI);
-};
+  return rad * (180 / Math.PI)
+}
 
 /**
  * To show powers 
@@ -268,11 +276,11 @@ function radianToDegree(rad) {
  * @returns 
  */
 function powertoDecimal(number){
-  let exponent = Math.floor(Math.log10(Math.abs(number)));
-  let firstPat = number / Math.pow(10, exponent);
-  let expressionString = `${firstPat} * 10^ ${exponent}`;
-  return expressionString;
-};
+  let exponent = Math.floor(Math.log10(Math.abs(number)))
+  let firstPat = number / Math.pow(10, exponent)
+  let expressionString = `${firstPat} * 10^ ${exponent}`
+  return expressionString
+}
 
 /**
  * To undo the change of powers to be able to do calculations with powers
@@ -281,15 +289,15 @@ function powertoDecimal(number){
  */
 function powertoLetter(string) {
   try {
-    let parts = string.split('*', 2);
-    let number = parseFloat(parts[0]);
-    let exponent = parseFloat(parts[1].replace('10^',''));
-    let result = number * Math.pow(10, exponent);
-    return result;
+    let parts = string.split('*', 2)
+    let number = parseFloat(parts[0])
+    let exponent = parseFloat(parts[1].replace('10^',''))
+    let result = number * Math.pow(10, exponent)
+    return result
   } catch {
-    return NaN;
+    return NaN
   }
-};
+}
 
 /**
  * Add colours to the menu
@@ -298,16 +306,16 @@ function powertoLetter(string) {
 function setupColourSelector(selector) {
   options = ['red', 'green', 'blue', 'yellow', 'magenta', 'black']
   for (let i = 0; i < options.length; i++){
-    selector.option(options[i]);
-  };
-};
+    selector.option(options[i])
+  }
+}
 
 function setupThemeSelector(selector){
   options = ['original', 'dark', 'cream', 'pastel']
   for (let i = 0; i < options.length; i++){
-    selector.option(options[i]);
+    selector.option(options[i])
   }
-};
+}
 
 function themeSetUp(theme, prevTheme){
   if (theme == "dark"){
@@ -348,59 +356,59 @@ function themeSetUp(theme, prevTheme){
     }
     colourBackground = color("white")
     return "original"
-  };
-};
+  }
+}
 
 function colourElements(elementColour, particle1, particle2, compass){
   // Text color
   colourText = elementColour
   
-  let titles = [title1, title2, title3, title4];
+  let titles = [title1, title2, title3, title4]
   for (let i = 0; i < titles.length; i++){
-    titles[i].style('color', color(elementColour));
-  };
-  let buttons = [b1, b2, b3, b4];
+    titles[i].style('color', color(elementColour))
+  }
+  let buttons = [b1, b2, b3, b4]
   for (let i = 0; i < buttons.length; i++){
-    buttons[i].style('color', color(elementColour));
-  };
+    buttons[i].style('color', color(elementColour))
+  }
 
-  compasAxisCheckbox.style('color', color(elementColour));
-  themeTitle.style('color', color(elementColour));
-  photonParticle.style('color', color(elementColour));
-  electronParticle.style('color', color(elementColour));
+  compasAxisCheckbox.style('color', color(elementColour))
+  themeTitle.style('color', color(elementColour))
+  photonParticle.style('color', color(elementColour))
+  electronParticle.style('color', color(elementColour))
 
   // Arrows' color
-  comptonEffect.photon1.colourArrow = elementColour;
-  comptonEffect.photon2.colourArrow = elementColour;
-  comptonEffect.electronMoving.colourArrow = elementColour;
+  comptonEffect.photon1.colourArrow = elementColour
+  comptonEffect.photon2.colourArrow = elementColour
+  comptonEffect.electronMoving.colourArrow = elementColour
 
   // Particle's color
-  colour1.selected(particle1);
-  comptonEffect.photon1.colour = color(particle1);
-  colour1.selected(particle1);
-  comptonEffect.photon2.colour = color(particle1);
-  colour2.selected(particle2);
-  comptonEffect.electronMoving.colour = color(particle2);
-};
+  colour1.selected(particle1)
+  comptonEffect.photon1.colour = color(particle1)
+  colour1.selected(particle1)
+  comptonEffect.photon2.colour = color(particle1)
+  colour2.selected(particle2)
+  comptonEffect.electronMoving.colour = color(particle2)
+}
 
 function isNumber(value) {
-  return !isNaN(value) && value === 'number';
-};
+  return !isNaN(value) && value === 'number'
+}
 
 function createCompass(drawAxisText){
-  stroke(colourText);
-  strokeWeight(5);
-  line(0, 90, 0, -90);
-  line(10, 90, -10, 90);
+  stroke(colourText)
+  strokeWeight(5)
+  line(0, 90, 0, -90)
+  line(10, 90, -10, 90)
   line(10, -90, -10, -90)
 
   if(drawAxisText){
-    textSize(10);
-    fill(colourText);
-    stroke(3);
+    textSize(10)
+    fill(colourText)
+    stroke(3)
     textFont(font)
     text("y", 14, 90)
   }
-};
+}
 
 
