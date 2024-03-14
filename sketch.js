@@ -218,7 +218,7 @@ function draw() {
     // Change caption
     if (waveParticle1.progress == 0.01) {
       caption.html("Photon approximates to the outer layers of an atom.")
-      caption.position(windowWidth/2 - 150, windowHeight - 200)
+      caption.position(windowWidth/2 - 150, windowHeight - 100)
     }
 
   } else {
@@ -226,7 +226,7 @@ function draw() {
       // Change caption
       if (waveParticle2.progress == 0) {
         caption.html("BANG !")
-        caption.position(windowWidth/2, windowHeight - 200)
+        caption.position(windowWidth/2, windowHeight - 100)
       }
       // Make other trail disappear
       waveParticle1.progressTrail()
@@ -239,7 +239,7 @@ function draw() {
       // Change caption
       if (waveParticle2.progress > 0.15) {
         caption.html("New photon with less energy and momentum is produced and an electron is scattered.")
-        caption.position(windowWidth/2 - 250, windowHeight - 200)
+        caption.position(windowWidth/2 - 250, windowHeight - 100)
       }
 
       // Move electron
@@ -363,6 +363,8 @@ function colourElements(elementColour, particle1, particle2, compass){
   // Text color
   colourText = elementColour
   
+  caption.style('color', color(colourText))
+
   let titles = [title1, title2, title3, title4]
   for (let i = 0; i < titles.length; i++){
     titles[i].style('color', color(elementColour))
