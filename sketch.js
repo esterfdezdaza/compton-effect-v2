@@ -38,24 +38,28 @@ function setup() {
   title1 = createP("Incident Photon's Wavelength")
   title1.position(10, 0)
   incidentLambdaInput = createSlider(0.01, 9.99, 2, 0.01)
+  incidentLambdaInput.elt.setAttribute("id", "slider")
   incidentLambdaInput.position(210, 15)
   incidentLambdaInput.size(100, 15)
 
   title2 = createP("Scattered Photon's Wavelength")
   title2.position(10, 20)
   scatteredLambdaInput = createSlider(0.01, 9.99, 3.41, 0.01)
+  scatteredLambdaInput.elt.setAttribute("id", "slider")
   scatteredLambdaInput.position(210, 35)
   scatteredLambdaInput.size(100, 15)
 
   title3 = createP('Theta')
   title3.position(10, 40)
   photonAngle = createSlider(0.001, 9.99, comptonEffect.theta, 0.01)
+  photonAngle.elt.setAttribute("id", "slider")
   photonAngle.position(210, 55)
   photonAngle.size(100, 15)
 
   title4 = createP('Phi')
   title4.position(10, 60)
   electronAngle = createSlider(0, 9.99, comptonEffect.phi, 0.01)
+  electronAngle.elt.setAttribute("id", "slider")
   electronAngle.position(210, 75)
   electronAngle.size(100, 15)
 
