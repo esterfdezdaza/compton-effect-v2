@@ -36,8 +36,6 @@ class ComptonEffect {
         if (!isNaN(theta)) {
             this.theta = theta // In rad
         }
-
-        console.log("Calculated theta: " + theta + " (rad), " + radianToDegree(theta) + " (deg)")
     }
 
     /**
@@ -50,7 +48,6 @@ class ComptonEffect {
         if (!isNaN(phi)) {
             this.phi = phi.toPrecision(5)
         }
-        console.log("Calculated phi: " + phi + ", in degrees: " + radianToDegree(phi))
     }
     
     /**
@@ -77,19 +74,21 @@ class ComptonEffect {
             this.photon2.a = getFrequency(scatteredLambda)
         }
     }
-
+    /**
+     * Calculates Compton's Effect formula for theta and phi values given
+     */
     calculate_theta_phi(){
         //theta = 2 * arcot(arcot(phi)/(1 + h/(me*c*lambda)))
         let theta = 2 * Math.atan(Math.atan(this.phi) / (1 + (this.h / (this.me * this.c * this.incidentLambda))))
         if (!isNaN(theta)) {
             this.theta = theta.toPrecision(5)
         }
-        console.log("Calculated theta: " + theta + ", in degrees: " + radianToDegree(theta))
     }
 }
-
 /**
- * Returns a number for the particle's speed
+ * 
+ * @param {*} nmValue the nanometer value to accelerate or slow down the particle
+ * @returns Returns a number for the particle's speed
  */
 function getFrequency(nmValue) {
     return floor(20 / (nmValue * Math.pow(10, 12)))

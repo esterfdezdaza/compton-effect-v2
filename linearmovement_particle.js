@@ -23,7 +23,8 @@ class LinearMovementParticle {
     }
 
     /**
-     * Hiddes the particle
+     * 
+     * @param {*} hidden Boolean to hide the particle
      */
     setHidden(hidden) {
         this.hidden = hidden
@@ -53,10 +54,11 @@ class LinearMovementParticle {
         this.drawArrow()
 
         push()
+        //Make the start vector the centre of our coordinate system
         translate(this.start)
         let or_rel = p5.Vector.add(this.end, p5.Vector.mult(this.start, -1)); // relative origin
         let diff = 0;    
-        // Cartesian Quadrants
+        // Cartesian Quadrants for the re-calculation of the given coordinates
         // 2 | 1
         // - o -
         // 3 | 4
@@ -97,7 +99,9 @@ class LinearMovementParticle {
     }
     
     /**
-     * Creates a line between two points
+     * Draws a line between v1 and v2
+     * @param {*} v1 coordinate 1
+     * @param {*} v2 coordinate 2
      */
     _line(v1, v2) {
         line(v1.x, v1.y, v1.z, v2.x, v2.y, v2.z)

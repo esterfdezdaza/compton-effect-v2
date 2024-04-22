@@ -10,11 +10,11 @@ class Sphere {
      */
     constructor(x, y, z, angle, colour, radius) {
         this.pos = createVector(x, y, z)
-        this.radius = radius
         this.angle = angle
         this.colour = colour
+        this.radius = radius
     }
-
+    //Show the created sphere with the given parameters
     show() {
         fill(this.colour)
         stroke(0)

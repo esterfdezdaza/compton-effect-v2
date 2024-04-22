@@ -117,13 +117,12 @@ function setup() {
   let refreshButton = createButton("↻")
   refreshButton.position(windowWidth - 70, 27)
   refreshButton.mousePressed(() => {
-    console.log("Refresh Button Clicked")
     location.reload(true)
   })
 }
 
 /**
- * Draw particles, compass and color in the canvas
+ * Draw particles, compass and colour menus in the canvas
  */
 function draw() {
   //Functionality main canvas
@@ -132,13 +131,11 @@ function draw() {
 
   //Defining theme and colors
   prevTheme = themeSetUp(theme.selected(), prevTheme)
-  console.log(prevTheme)
   // Drawing compass
   createCompass(compasAxisCheckbox.checked())
 
   //Update values of the input boxes plus handling error
   let newScatteredLambda = scatteredLambdaInput.value() * Math.pow(10, -12)
-  console.log("scattered lambda: " + newScatteredLambda)
   if (!isNaN(newScatteredLambda)) {
     comptonEffect.scatteredLambda = newScatteredLambda
   }
@@ -154,14 +151,10 @@ function draw() {
   if (!isNaN(newPhi)) {
     comptonEffect.phi = newPhi
   }
-
   if (isNaN(newScatteredLambda) || isNaN(newIncidentLambda) || isNaN(newTheta) || isNaN(newPhi)) {
-    console.log(isNumber(newScatteredLambda))
-    console.log(newScatteredLambda)
     return
   }
   if (this.prevIncLambda != comptonEffect.incidentLambda) {
-    console.log("inc lambda changed")
     console.log(`prev: ${this.prevIncLambda} \n new: ${comptonEffect.incidentLambda}`)
     // User has changed incident lambda
     comptonEffect.photon1.a = getFrequency(comptonEffect.incidentLambda)
@@ -171,7 +164,6 @@ function draw() {
     photonAngle.value(comptonEffect.theta)
     electronAngle.value(comptonEffect.phi)
   } else if (this.prevScaLambda != comptonEffect.scatteredLambda) {
-    console.log("sca lambda changed")
     // User has changed scattered lambda
     comptonEffect.photon2.a = getFrequency(comptonEffect.scatteredLambda)
     comptonEffect.calculate_theta()
@@ -180,7 +172,6 @@ function draw() {
     photonAngle.value(comptonEffect.theta)
     electronAngle.value(comptonEffect.phi)
   } else if (this.prevTheta != comptonEffect.theta) {
-    console.log("theta changed")
     // User has changed theta
     comptonEffect.calculate_scatteredLambda()
     comptonEffect.photon2.a = getFrequency(comptonEffect.scatteredLambda)
@@ -194,10 +185,8 @@ function draw() {
     comptonEffect.calculate_scatteredLambda()
     comptonEffect.photon2.a = getFrequency(comptonEffect.scatteredLambda)
 
-
     photonAngle.value(comptonEffect.theta)
     scatteredLambdaInput.value(comptonEffect.scatteredLambda)
-
   }
 
   // Update text next to the sliders
@@ -245,7 +234,6 @@ function draw() {
         caption.html("New photon with less energy and momentum is produced and an electron is scattered.")
         caption.position(windowWidth/2 - 250, windowHeight - 100)
       }
-
       // Move electron
       comptonEffect.electronMoving.progress += 0.01
     } else {
@@ -276,7 +264,7 @@ function radianToDegree(rad) {
 
 /**
  * To show powers 
- * @param {*} number numbers and power with e
+ * @param {*} number numbers and power with e notation
  * @returns 
  */
 function powertoDecimal(number){
@@ -313,14 +301,22 @@ function setupColourSelector(selector) {
     selector.option(options[i])
   }
 }
-
+/**
+ * Add colours to the menu
+ * @param {*} selector the selector to add options to
+ */
 function setupThemeSelector(selector){
   options = ['original', 'dark', 'cream', 'pastel']
   for (let i = 0; i < options.length; i++){
     selector.option(options[i])
   }
 }
-
+/**
+ * 
+ * @param {*} theme Name of the new theme
+ * @param {*} prevTheme Name of the old theme
+ * @returns the new theme
+ */
 function themeSetUp(theme, prevTheme){
   if (theme == "dark"){
     // If it is the first time the theme is chosen: setup theme colors
@@ -363,7 +359,13 @@ function themeSetUp(theme, prevTheme){
   }
 }
 
-function colourElements(elementColour, particle1, particle2, compass){
+/**
+ * 
+ * @param {*} elementColour pre-set colour
+ * @param {*} particle1 particle to change colour
+ * @param {*} particle2 particle to change colour
+ */
+function colourElements(elementColour, particle1, particle2){
   // Text color
   colourText = elementColour
   
@@ -396,11 +398,18 @@ function colourElements(elementColour, particle1, particle2, compass){
   colour2.selected(particle2)
   comptonEffect.electronMoving.colour = color(particle2)
 }
-
+/**
+ * 
+ * @param {*} value number to verify if it is a value or a NaaN
+ * @returns True/False if it is a NaaN or a number
+ */
 function isNumber(value) {
   return !isNaN(value) && value === 'number'
 }
-
+/**
+ * 
+ * @param {*} drawAxisText creates compass and shows axix if box is selected
+ */
 function createCompass(drawAxisText){
   stroke(colourText)
   strokeWeight(5)
