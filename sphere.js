@@ -14,7 +14,7 @@ class Sphere {
         this.colour = colour
         this.radius = radius
     }
-    // Show the created sphere with the given parameters
+    // Creates the sphere with the given parameters on the canvas
     show() {
         fill(this.colour)
         stroke(0)
