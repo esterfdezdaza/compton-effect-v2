@@ -39,7 +39,7 @@ class ComptonEffect {
     }
 
     /**
-     * Calculates then angle phi
+     * Calculates angle phi
      */
     calculate_phi() {
         // phi = arcot( 1 + h/(me*c*lambda)) * tan( theta/ 2 ) )
@@ -49,7 +49,6 @@ class ComptonEffect {
             this.phi = phi.toPrecision(5)
         }
     }
-    
     /**
      * Calculates Compton's Effect formula for the Incident Lambda
      */
@@ -61,7 +60,6 @@ class ComptonEffect {
             this.incidentLambda = incidentLambda
         }
     }
-    
     /**
      * Calculates Compton's Effect formula for the Scattered Lambda
      */
@@ -75,7 +73,7 @@ class ComptonEffect {
         }
     }
     /**
-     * Calculates Compton's Effect formula for theta and phi values given
+     * Calculates Compton's Effect formula for theta when phi has been changed
      */
     calculate_theta_phi(){
         //theta = 2 * arcot(arcot(phi)/(1 + h/(me*c*lambda)))

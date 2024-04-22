@@ -5,7 +5,6 @@ let waveParticle1, waveParticle2
 let colour1, colour2, colourText, theme, colourBackground, prevTheme
 let title1, title2, title3, title4, b1, b2, b3, b4, photonParticle, electronParticle, themeTitle
 let caption // The text right below the visualisation providing some more detail about what is visible
-
 let camera
 let font
 let compasAxisCheckbox
@@ -21,7 +20,7 @@ function preload() {
  * Set up of the canvas and its elements
  */
 function setup() {
-  // Setup normal canvas
+  // Set up normal canvas
   createCanvas(windowWidth, windowHeight, WEBGL)
   camera = createEasyCam()
   
@@ -32,7 +31,6 @@ function setup() {
   colourText = 0
   colourBackground = 255
   prevTheme = "original"
-
 
   // Input boxes
   title1 = createP("Incident Photon's Wavelength")
@@ -64,7 +62,6 @@ function setup() {
   electronAngle.size(100, 15)
 
   // Units for the boxes
-
   b1 = createP(incidentLambdaInput.value() + ' * 10 ^ -12 m')
   b1.position(325, 0)
   b2 = createP(scatteredLambdaInput.value() + ' * 10 ^ -12 m')
@@ -80,7 +77,7 @@ function setup() {
   electronParticle = createP('Electron')
   electronParticle.position(10, windowHeight - 80)
 
-  // initialise previous values
+  // Initialise previous values
   this.prevIncLambda = parseFloat((incidentLambdaInput.value()) * Math.pow(10, -12))
   this.prevScaLambda = parseFloat((scatteredLambdaInput.value()) * Math.pow(10, -12))
   this.prevTheta = parseFloat(photonAngle.value())
@@ -125,16 +122,16 @@ function setup() {
  * Draw particles, compass and colour menus in the canvas
  */
 function draw() {
-  //Functionality main canvas
+  // Functionality main canvas
   background(colourBackground)
   lights()
 
-  //Defining theme and colors
+  // Defining theme and colors
   prevTheme = themeSetUp(theme.selected(), prevTheme)
   // Drawing compass
   createCompass(compasAxisCheckbox.checked())
 
-  //Update values of the input boxes plus handling error
+  // Update values of the input boxes plus handling error
   let newScatteredLambda = scatteredLambdaInput.value() * Math.pow(10, -12)
   if (!isNaN(newScatteredLambda)) {
     comptonEffect.scatteredLambda = newScatteredLambda
@@ -155,7 +152,6 @@ function draw() {
     return
   }
   if (this.prevIncLambda != comptonEffect.incidentLambda) {
-    console.log(`prev: ${this.prevIncLambda} \n new: ${comptonEffect.incidentLambda}`)
     // User has changed incident lambda
     comptonEffect.photon1.a = getFrequency(comptonEffect.incidentLambda)
     comptonEffect.calculate_theta()
@@ -199,7 +195,7 @@ function draw() {
 
   // Movement of the Particle
   if (waveParticle1.progress < 1) {
-    //  Make other trail disappear
+    // Make other trail disappear
     waveParticle2.progressTrail()
     waveParticle2.setHidden(true)
     waveParticle2.progress = 0
@@ -275,8 +271,8 @@ function powertoDecimal(number){
 }
 
 /**
- * To undo the change of powers to be able to do calculations with powers
- * @param {*} string string of numbers and power with 10
+ * To transform a string representing a number in scientific notation (e.g. 1.5*10^2) into a number
+ * @param {*} string the string representing the number in scientific notation
  * @returns 
  */
 function powertoLetter(string) {
@@ -319,7 +315,7 @@ function setupThemeSelector(selector){
  */
 function themeSetUp(theme, prevTheme){
   if (theme == "dark"){
-    // If it is the first time the theme is chosen: setup theme colors
+    // If it is the first time the theme is chosen: setup theme coluors
     if (prevTheme != "dark"){
       colourElements(255, "yellow", "magenta", ["yellow", "green", "blue"])
     // Otherwise theme is the same, so you can choose any color for now
@@ -366,7 +362,7 @@ function themeSetUp(theme, prevTheme){
  * @param {*} particle2 particle to change colour
  */
 function colourElements(elementColour, particle1, particle2){
-  // Text color
+  // Text colour
   colourText = elementColour
   
   caption.style('color', color(colourText))
@@ -385,12 +381,12 @@ function colourElements(elementColour, particle1, particle2){
   photonParticle.style('color', color(elementColour))
   electronParticle.style('color', color(elementColour))
 
-  // Arrows' color
+  // Arrows' colour
   comptonEffect.photon1.colourArrow = elementColour
   comptonEffect.photon2.colourArrow = elementColour
   comptonEffect.electronMoving.colourArrow = elementColour
 
-  // Particle's color
+  // Particles' colour
   colour1.selected(particle1)
   comptonEffect.photon1.colour = color(particle1)
   colour1.selected(particle1)
@@ -401,7 +397,7 @@ function colourElements(elementColour, particle1, particle2){
 /**
  * 
  * @param {*} value number to verify if it is a value or a NaaN
- * @returns True/False if it is a NaaN or a number
+ * @returns True/False whether it is a Number or NaN
  */
 function isNumber(value) {
   return !isNaN(value) && value === 'number'

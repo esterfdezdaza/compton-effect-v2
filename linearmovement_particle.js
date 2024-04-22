@@ -9,17 +9,16 @@ class LinearMovementParticle {
      * @param {*} z2 z parameter of the vector end
      */
     constructor(x1, y1, z1, x2, y2, z2) {
-    this.colour = color(0, 0, 255)
-    this.colourArrow = 0 // Has to be the value 0 or 255
+        this.colour = color(0, 0, 255)
+        this.colourArrow = 0 // Has to be the value 0 or 255
 
-    this.start = createVector(x1, y1, z1)
-    this.end = createVector(x2, y2, z2)
-    this.progress = 0
-    this.particle = new Sphere(0, 0, 0, 0, this.colour, 10)
-    this.trail = []
-    
-    this.hidden = false // whether or not to draw the particle
-
+        this.start = createVector(x1, y1, z1)
+        this.end = createVector(x2, y2, z2)
+        this.progress = 0
+        this.particle = new Sphere(0, 0, 0, 0, this.colour, 10)
+        this.trail = []
+        
+        this.hidden = false // Whether or not to draw the particle
     }
 
     /**
@@ -35,7 +34,6 @@ class LinearMovementParticle {
      */
     setProgress() {
         let distance = this.start.dist(this.end)
-    
         let output = distance * this.progress
 
         this.particle.pos.x = output
@@ -54,9 +52,9 @@ class LinearMovementParticle {
         this.drawArrow()
 
         push()
-        //Make the start vector the centre of our coordinate system
+        // Make the start vector the centre of our coordinate system
         translate(this.start)
-        let or_rel = p5.Vector.add(this.end, p5.Vector.mult(this.start, -1)); // relative origin
+        let or_rel = p5.Vector.add(this.end, p5.Vector.mult(this.start, -1)) // Relative origin
         let diff = 0;    
         // Cartesian Quadrants for the re-calculation of the given coordinates
         // 2 | 1
@@ -84,7 +82,7 @@ class LinearMovementParticle {
 
         stroke([255, 255, 0])
         strokeWeight(1)
-        // draw trail
+        // Draw trail
         let distance = this.start.dist(this.end)
         for (let i = 0; i < this.trail.length - 1; i++) {
             let col = this.colour
@@ -116,13 +114,13 @@ class LinearMovementParticle {
         strokeWeight(2)
         this._line(this.start, this.end)
     
-        // this code is to make the arrow point
-        push(); //start new drawing state
+        // This code is to make the arrow point
+        push() // Start new drawing state
         var offset = 10
-        var angle = atan2(this.start.y - this.end.y, this.start.x - this.end.x); //gets the angle of the line
-        translate(this.end.x, this.end.y); //translates to the destination vertex
-        rotate(angle - HALF_PI); //rotates the arrow point
-        triangle(-offset * 0.5, offset, offset * 0.5, offset, 0, 0); //draws the arrow point as a triangle
+        var angle = atan2(this.start.y - this.end.y, this.start.x - this.end.x) // Gets the angle of the line
+        translate(this.end.x, this.end.y) // Translates to the destination vector
+        rotate(angle - HALF_PI) // Rotates the arrow point
+        triangle(-offset * 0.5, offset, offset * 0.5, offset, 0, 0) // Draws the arrow point as a triangle
         pop()
     }
 }
